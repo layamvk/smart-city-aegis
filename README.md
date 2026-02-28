@@ -1,95 +1,71 @@
-# 🏙️ Aegis Chennai: Zero Trust Urban Infrastructure Platform
+# 🏙️ Aegis Chennai: High-Fidelity Zero Trust Urban Defense Platform
 
-### *Securing the Digital Pulse of a Smart City*
+### *Autonomous Governance & Cryptographic Security for Critical Infrastructure*
 
-Aegis Chennai is a production-ready, **Zero Trust** security framework and interactive dashboard designed to protect critical urban infrastructure. From traffic coordination to smart grid management, it enforces strict identity verification, role-based access control (RBAC), and real-time threat intelligence.
-
----
-
-## 🏗️ Architecture Overview
-
-The system follows a **decoupled micro-architecture** designed for high availability and military-grade security:
-
--   **Secure API Gateway (Node.js/Express):** Enforces triple-layer authentication (JWT + RBAC + Device Trust).
--   **Intelligence Engine:** Real-time threat detection system that monitors for Brute Force, DDoS, and Privilege Escalation.
-*   **Interactive Command Center (React):** A high-performance, GPU-accelerated dashboard providing 360° visibility into city operations.
-*   **Resilient Data Layer (MongoDB):** Secure, audit-ready storage for infrastructure states and security events.
+Aegis Chennai is an enterprise-grade **Zero Trust Architecture (ZTA)** simulation and monitoring platform designed for the protection of mission-critical urban assets. Built on the principle of **"Never Trust, Always Verify,"** the system provides a high-fidelity digital twin of Chennai's infrastructure, enforcing granular access control, real-time telemetry encryption, and automated threat mitigation.
 
 ---
 
-## 🛠️ Tech Stack
+## 🏗️ Architectural Paradigm
 
--   **Frontend:** React 18, Leaflet.js (GPU-Accelerated Maps), Axios (Secure Interceptors), CSS Transitions (60FPS).
--   **Backend:** Node.js, Express, MongoDB (Atlas), Redis (Token Revocation).
--   **Security:** JSON Web Tokens (JWT), Bcrypt.js (Password Hashing), Helmet, Rate Limiter, NoSQL Injection protection.
+The platform is engineered using a **Secure-by-Design** philosophy, decoupling the command interface from the underlying infrastructure nodes to prevent lateral movement during a compromise.
 
----
-
-## 🛡️ Security Features & Threat Model
-
-### **1. Zero Trust Identity**
-*   **Dual-Token System:** 15-minute Access Tokens + 7-day HttpOnly Refresh Tokens.
-*   **Token Revocation:** Persistent session invalidation via Redis blacklist for immediate logout.
-
-### **2. Device Trust Scoring**
-*   Each user maintains a **Dynamic Trust Score (0-100)**.
-*   Actions like unauthorized access attempts or suspicious travel speeds (Geo-IP) reduce trust, leading to automatic account lockout.
-
-### **3. Advanced Threat detection**
-*   **Impossible Travel:** Detects logins from geographically distant locations in unrealistic timeframes.
-*   **Brute Force Protection:** Atomic login lockouts after 5 failed attempts.
-*   **API Rate Limiting:** Global and per-endpoint limiting to neutralize DDoS and scraping.
+-   **Zero Trust Gateway (ZTG):** A centralized Node.js/Express ingestion layer that validates every micro-request against identity, role, and environmental context.
+-   **Security Intelligence Engine (SIE):** A parallel processing layer that analyzes event streams for behavioral anomalies, including brute-force patterns and impossible travel geofencing.
+-   **Distributed Ledger of Action (Audit):** A tamper-evident logging system that captures every state change, essential for post-incident forensics and regulatory compliance (GDPR/CERT-In).
+-   **GPU-Accelerated Command Center:** A high-performance React frontend utilizing hardware-accelerated rendering for real-time visualization of city-wide security states.
 
 ---
 
-## 🚀 Setup Instructions
+## 🛡️ Deep Security Implementation (Production-Grade)
 
-### **Prerequisites**
--   Node.js (v16+)
--   MongoDB (Atlas or Local)
--   Redis (Optional, for Token Revocation)
+### **1. Identity & Access Management (IAM)**
+*   **Dual-Layer Tokenization:** Implements Short-Lived **JWT Access Tokens (15m)** and Security-Hardened **HttpOnly/Secure Refresh Tokens (7d)**.
+*   **Cryptographic Blacklisting:** Instantaneous session revocation via a high-performance **Redis-backed blacklist**, enabling "One-Click Force Logout" city-wide.
+*   **Dynamic RBAC (Role-Based Access Control):** Granular permission matrices for `Admin`, `TrafficOperator`, `EmergencyAuthority`, and `SecurityAnalyst`, ensuring strictly policed Least-Privilege access.
 
-### **Backend Setup**
-1.  Navigate to `/server`
-2.  `npm install`
-3.  `cp .env.example .env` (Add your MongoDB URI and JWT Secrets)
-4.  `npm start`
+### **2. Behavioral Threat Modeling & Mitigation**
+*   **Impossible Travel Heuristics:** Calculates Euclidean distance between consecutive login attempts. If the implied velocity exceeds realistic thresholds (~900km/h), the account is locked and flagged for Critical Alert.
+*   **Dynamic Device Trust Scoring:** Every device interaction updates a **Trust Propensity Score (0-100)**. High-risk actions (e.g., unauthorized API probes) degrade trust, triggering automatic MFA (Multi-Factor Authentication) requirements or total lockout.
+*   **Atomic Brute-Force Circuit Breakers:** Distributed rate-limiting (via `express-rate-limit`) and atomic database increments prevent parallel credential stuffing.
 
-### **Frontend Setup**
-1.  Navigate to `/client`
-2.  `npm install`
-3.  `cp .env.example .env`
-4.  `npm start`
+### **3. Infrastructure Protocol Security**
+*   **Command Isolation:** Infrastructure controls (Traffic Signals, Water Valves, Grid Overrides) are gated behind **Modular Protection Middleware**, preventing direct unauthorized node interaction.
+*   **Input Sanitization & NoSQL Injection Guard:** Strict enforcement of `express-mongo-sanitize` and schema validation (Joi) to neutralize prototype pollution and injection vectors.
+*   **Header Hardening:** Full Implementation of **Helmet.js** with strictly defined Content Security Policies (CSP) to mitigate XSS and clickjacking.
 
 ---
 
-## ⚙️ Environment Variables Required
+## 📡 Modern Domain Expertise
 
-| Variable | Description | Default |
+### **Digital Twin Simulation**
+*   **Urban Map Architecture:** Utilizing Leaflet.js with custom GeoJSON layers to simulate Chennai's IT corridors, CBD, and high-risk flood zones.
+*   **Interdependency Mapping:** Simulates how a compromise in the Power Grid cascades into Water Supply and Traffic Safety, allowing authorities to visualize "Worst-Case" security scenarios.
+
+---
+
+## 🚀 Deployment & Operational Readiness
+
+### **Environmental Standardization**
+The platform is designed to be environment-agnostic. All sensitive configuration is loaded via standardized environment injection:
+
+| Variable | Security Function | Required In |
 | :--- | :--- | :--- |
-| `MONGO_URI` | MongoDB Connection String | Required |
-| `JWT_SECRET` | Secret for Access Tokens | Required |
-| `REFRESH_SECRET` | Secret for Refresh Tokens | Required |
-| `REDIS_URL` | Redis Connection URI | Required |
-| `PORT` | Server Port | 5000 |
-| `NODE_ENV` | Environment Type | development |
+| `MONGO_URI` | Encrypted persistence layer connection | Production |
+| `JWT_SECRET` | HS256 Signing key for Identity Tokens | Production |
+| `REDIS_URL` | State-sync for session revocation | Production |
+| `NODE_ENV` | Controls error verbosity (Hides stack traces) | Production |
+
+### **Operational Hardening CLI**
+1.  **Backend Initialization:** `cd server && npm install`
+2.  **Environment Sync:** `cp .env.example .env` (Populate with production secrets)
+3.  **Core Validation:** The system performs an **Automated Environment Audit** at boot. If `ZTA` requirements are not met, the process terminates to prevent a "Default-Open" security failure.
 
 ---
 
-## 📜 Deployment Instructions
-
-1.  **Backend:** Deploy via Render, Heroku, or AWS EC2. Add Environment Variables in the provider's dashboard.
-2.  **Frontend:** Build via `npm run build` and deploy to Vercel or Netlify.
-3.  **Database:** Use MongoDB Atlas for a secure, distributed cloud database.
+## 📋 Security Compliance & Forensics
+*   **Auditability:** Every infrastructure toggle is logged with IP, User-Agent, Device-Fingerprint, and Geo-Data.
+*   **Threat Persistence:** Anomalies are stored as `ThreatEvents` in MongoDB for longitudinal risk trend analysis.
 
 ---
-
-## 👮 Security Considerations
-
--   **Production Mode:** Ensure `NODE_ENV=production` to disable verbose stack traces.
--   **CORS:** Strictly define `CORS_ORIGIN` in production to prevent unauthorized domain access.
--   **HTTPS:** Always serve behind TLS/SSL to protect tokens in transit.
-
----
-
-*This project was built for high-stakes urban environments where security isn't just a feature—it's the core mission.*
+*Built as a resilient, state-of-the-art defense system for the metropolitan digital frontier.*
