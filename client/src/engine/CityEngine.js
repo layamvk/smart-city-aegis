@@ -78,7 +78,7 @@ export const CityEngineProvider = ({ children }) => {
 
     useEffect(() => {
         const kmlPath = '/0f0ccbda-9485-4964-b3b1-6ce53af82bbb.kml';
-        console.log(`[CORE] Loading KML from: ${kmlPath}`);
+        console.log(`[CORE] Fetching: ${kmlPath}`);
 
         fetch(kmlPath)
             .then(res => {
@@ -86,50 +86,45 @@ export const CityEngineProvider = ({ children }) => {
                 return res.text();
             })
             .then(text => {
-                console.log(`[CORE] KML received (${text.length} bytes)`);
+                console.log(`[CORE] KML received: ${text.length} bytes`);
                 const geojson = convertKMLString(text);
+
                 if (!geojson || !geojson.features.length) {
-                    console.error('[CORE] KML yielded no renderable features!');
+                    console.error('[CORE] No features after KML parse!');
                     return;
                 }
 
-                console.log(`[CORE] Flat features: ${geojson.features.length}`);
-
-                // Group flattened features by zone name so each GCC zone = one entry
-                const grouped = {};
-                geojson.features.forEach((f, i) => {
-                    const zoneName = f.properties?.name || f.properties?.ZONE_NAME || `Ward-${i}`;
-                    if (!grouped[zoneName]) grouped[zoneName] = { features: [], props: f.properties };
-                    f.properties = { ...f.properties, name: zoneName, id: zoneName };
-                    f.id = zoneName;
-                    grouped[zoneName].features.push(f);
-                });
+                console.log(`[CORE] ${geojson.features.length} polygon features parsed`);
 
                 const initZones = {};
-                Object.entries(grouped).forEach(([zoneName, { features: zFeatures, props }]) => {
-                    initZones[zoneName] = {
-                        ...props,
-                        name: zoneName,
-                        id: zoneName,
-                        type: 'Ward',
-                        riskScore: 10 + Math.random() * 70,
-                        trafficLoad: 30 + Math.random() * 60,
-                        gridLoad: 35 + Math.random() * 57,
-                        waterLevel: 40 + Math.random() * 55,
-                        lightingLevel: 20 + Math.random() * 80,
-                        emergencyActive: false,
-                        status: 'NORMAL',
-                        lastUpdated: Date.now(),
-                        features: zFeatures,
-                        feature: zFeatures[0],
-                        riskHistory: Array.from({ length: 12 }, () => 15 + Math.random() * 15),
-                    };
+                geojson.features.forEach((f, i) => {
+                    const id = f.properties?.name || `Zone-${i}`;
+                    // Each feature is now a plain Polygon — no GeometryCollection
+                    if (!initZones[id]) {
+                        initZones[id] = {
+                            name: id, id,
+                            type: 'Ward',
+                            riskScore: 10 + Math.random() * 70,
+                            trafficLoad: 30 + Math.random() * 60,
+                            gridLoad: 35 + Math.random() * 57,
+                            waterLevel: 40 + Math.random() * 55,
+                            lightingLevel: 20 + Math.random() * 80,
+                            emergencyActive: false,
+                            status: 'NORMAL',
+                            lastUpdated: Date.now(),
+                            features: [],
+                            feature: f,
+                            riskHistory: Array.from({ length: 12 }, () => 15 + Math.random() * 15),
+                        };
+                    }
+                    // Accumulate all rings for this zone (handles multi-polygon wards)
+                    initZones[id].features.push(f);
                 });
 
-                console.log(`[CORE] Zones ready: ${Object.keys(initZones).length} GCC wards`);
+                console.log(`[CORE] ${Object.keys(initZones).length} GCC zones ready`);
                 setZones(initZones);
             })
-            .catch(err => console.error('[CORE] Fatal KML error:', err));
+            .catch(err => console.error('[CORE] KML fetch error:', err));
     }, []);
 
     // --- ACTIONS ---

@@ -1,54 +1,57 @@
-import * as toGeoJSON from "@tmcw/togeojson";
-
 /**
- * Flattens a GeoJSON feature that may have a GeometryCollection
- * into one or more features with simple geometry types.
- * Leaflet cannot render GeometryCollection natively.
+ * Direct KML parser — does NOT use @tmcw/togeojson.
+ * Reads <coordinates> from all <Placemark> elements directly.
+ * This avoids the GeometryCollection issue where togeojson wraps
+ * MultiGeometry in a GeometryCollection that Leaflet cannot render.
  */
-function flattenFeature(feature) {
-    if (!feature || !feature.geometry) return [];
-    const { geometry, properties, id } = feature;
-
-    if (geometry.type !== "GeometryCollection") {
-        return [feature];
-    }
-
-    // GeometryCollection → one feature per geometry
-    return (geometry.geometries || [])
-        .filter(g => g && g.type && g.coordinates)
-        .map((g, i) => ({
-            type: "Feature",
-            id: id ? `${id}_${i}` : undefined,
-            properties: { ...properties },
-            geometry: g,
-        }));
-}
-
 export function convertKMLString(kmlText) {
     try {
         const parser = new DOMParser();
-        const kml = parser.parseFromString(kmlText, "text/xml");
-        const geojson = toGeoJSON.kml(kml);
+        const kmlDoc = parser.parseFromString(kmlText, 'text/xml');
 
-        if (!geojson || !geojson.features) {
-            console.warn("[KML] No features found in KML");
-            return { type: "FeatureCollection", features: [] };
-        }
+        const placemarks = Array.from(kmlDoc.querySelectorAll('Placemark'));
+        console.log(`[KML] Found ${placemarks.length} Placemarks`);
 
-        // Flatten GeometryCollections so Leaflet can render them
-        const flattened = [];
-        geojson.features.forEach(f => {
-            flattenFeature(f).forEach(flat => flattened.push(flat));
+        const features = [];
+
+        placemarks.forEach((pm, pi) => {
+            const name = pm.querySelector('name')?.textContent?.trim() || `Zone-${pi}`;
+            const coordEls = Array.from(pm.querySelectorAll('coordinates'));
+
+            coordEls.forEach((coordEl, ci) => {
+                const raw = coordEl.textContent.trim();
+                // KML coordinates are "lng,lat,alt" space-separated
+                const points = raw.split(/\s+/).filter(s => s.includes(','));
+                const ring = points.map(p => {
+                    const parts = p.split(',');
+                    const lng = parseFloat(parts[0]);
+                    const lat = parseFloat(parts[1]);
+                    return [lng, lat]; // GeoJSON order: [lng, lat]
+                }).filter(([lng, lat]) => !isNaN(lng) && !isNaN(lat) && isFinite(lng) && isFinite(lat));
+
+                if (ring.length < 3) return;
+
+                // Close the ring if not already closed
+                if (ring[0][0] !== ring[ring.length - 1][0] || ring[0][1] !== ring[ring.length - 1][1]) {
+                    ring.push([ring[0][0], ring[0][1]]);
+                }
+
+                features.push({
+                    type: 'Feature',
+                    id: name,
+                    properties: { name, id: name },
+                    geometry: {
+                        type: 'Polygon',
+                        coordinates: [ring],
+                    },
+                });
+            });
         });
 
-        // Filter to renderable types only
-        const validTypes = new Set(["Polygon", "MultiPolygon", "LineString", "MultiLineString", "Point"]);
-        const valid = flattened.filter(f => f.geometry && validTypes.has(f.geometry.type));
-
-        console.log(`[KML] Total features after flattening: ${valid.length} (from ${geojson.features.length} originals)`);
-        return { type: "FeatureCollection", features: valid };
+        console.log(`[KML] Extracted ${features.length} polygon features from ${placemarks.length} placemarks`);
+        return { type: 'FeatureCollection', features };
     } catch (e) {
-        console.error("[KML] Parse error:", e);
-        return { type: "FeatureCollection", features: [] };
+        console.error('[KML] Parse error:', e);
+        return { type: 'FeatureCollection', features: [] };
     }
 }
