@@ -2,7 +2,7 @@ import React from 'react';
 import { useCityEngine } from '../engine/CityEngine';
 
 const DigitalTwinStats = () => {
-    const { summary } = useCityEngine();
+    useCityEngine();
 
     return (
         <div className="dashboard-panel" style={{ padding: 15, marginTop: 15 }}>

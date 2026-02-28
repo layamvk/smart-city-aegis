@@ -20,7 +20,7 @@ const Login = () => {
     e.preventDefault();
     if (mode === 'register') {
       try {
-        const res = await register(username, password, phoneNumber, role);
+        await register(username, password, phoneNumber, role);
         setError("");
         setSuccess("Verification code sent! Enter it below.");
         setMode('verify');

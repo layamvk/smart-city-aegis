@@ -8,7 +8,7 @@ const MODES = ['Normal', 'Peak Hour', 'Emergency', 'Stress Test'];
 
 const CommandPalette = () => {
     const { mapRef } = useMapContext();
-    const { zones, emit, triggerScenario, setGlobalThreatScore } = useCityEngine();
+    const { emit, triggerScenario, setGlobalThreatScore } = useCityEngine();
 
     const [open, setOpen] = useState(false);
     const [query, setQuery] = useState('');

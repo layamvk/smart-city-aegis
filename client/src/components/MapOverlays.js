@@ -1,6 +1,6 @@
 import { useEffect, useRef, useCallback } from 'react';
 import L from 'leaflet';
-import { useCityEngine, CHENNAI_ZONES_GEOJSON } from '../engine/CityEngine';
+import { useCityEngine } from '../engine/CityEngine';
 import { useMapContext } from '../context/MapContext';
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
@@ -25,7 +25,7 @@ const ZONE_COLORS = {
   Port: '#FF8C00',
   Defense: '#FF0000',
 };
-const getZoneColor = t => ZONE_COLORS[t] || '#00F0FF';
+// Helper removed
 
 const MapOverlays = ({ activeZone, onZoneClick, onNodeClick }) => {
   const { mapRef, layersRef } = useMapContext();
