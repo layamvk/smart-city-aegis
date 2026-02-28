@@ -30,6 +30,9 @@ const lightRoutes = require('./routes/lights');
 
 const app = express();
 
+// Trust proxy for Render/Vercel deployments to get correct client IP for rate limiting
+app.set('trust proxy', 1);
+
 // Security Headers
 app.use(helmet());
 const allowedOrigins = [
