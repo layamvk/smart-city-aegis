@@ -67,7 +67,6 @@ router.post('/:id/resolve', verifyToken, authorizeRoles('Admin', 'EmergencyAutho
 const overrideLimiter = rateLimit({
   windowMs: 60 * 60 * 1000,
   max: OVERRIDE_MAX_PER_HOUR,
-  keyGenerator: (req) => req.user?.id || req.ip,
   message: 'Override rate limit exceeded. Maximum 3 overrides per hour.'
 });
 
