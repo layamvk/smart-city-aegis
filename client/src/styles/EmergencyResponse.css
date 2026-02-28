@@ -1,0 +1,287 @@
+/* Emergency Response Styling */
+.emergency-response-module {
+  padding: 16px;
+  background: transparent;
+  border-radius: 0;
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.emergency-response-module .module-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #333;
+  padding-bottom: 12px;
+}
+
+.emergency-response-module h3 {
+  margin: 0;
+  font-size: 16px;
+  color: #fff;
+}
+
+.incident-count {
+  font-size: 12px;
+  color: #ff3333;
+  font-weight: bold;
+  background: rgba(255, 51, 51, 0.1);
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.incidents-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.no-incidents {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 16px;
+  text-align: center;
+  color: #888;
+  font-size: 12px;
+}
+
+.incident-card {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-left: 4px solid #ff3333;
+  border-radius: 6px;
+  padding: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 12px;
+  align-items: start;
+}
+
+.incident-card:hover {
+  background: #222;
+  border-color: #444;
+}
+
+.incident-card.selected {
+  background: #222;
+  border-color: #66ccff;
+  box-shadow: 0 0 16px rgba(102, 204, 255, 0.2);
+}
+
+.incident-card.pulsing {
+  animation: pulse-incident 1s ease-in-out infinite;
+}
+
+@keyframes pulse-incident {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.incident-type-icon {
+  font-size: 24px;
+}
+
+.incident-info h4 {
+  margin: 0 0 4px 0;
+  font-size: 13px;
+  color: #fff;
+}
+
+.incident-info p {
+  margin: 2px 0;
+  font-size: 11px;
+  color: #888;
+}
+
+.incident-location {
+  color: #aaa;
+  font-weight: 500;
+}
+
+.incident-status {
+  display: flex;
+}
+
+.status-badge {
+  display: inline-block;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-weight: bold;
+}
+
+.status-open {
+  background: rgba(255, 51, 51, 0.2);
+  color: #ff3333;
+}
+
+.status-dispatched {
+  background: rgba(255, 170, 0, 0.2);
+  color: #ffaa00;
+}
+
+.status-closed {
+  background: rgba(0, 204, 68, 0.2);
+  color: #00cc44;
+}
+
+.incident-time {
+  font-size: 10px;
+  color: #666;
+}
+
+.assigned-unit {
+  font-size: 11px;
+  color: #66ccff;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.incident-detail-panel {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 16px;
+  margin-top: 16px;
+}
+
+.incident-detail-panel h4 {
+  margin: 0 0 12px 0;
+  color: #66ccff;
+  font-size: 14px;
+}
+
+.detail-info {
+  background: #0f0f0f;
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+  font-size: 12px;
+}
+
+.detail-info p {
+  margin: 6px 0;
+  color: #aaa;
+}
+
+.detail-info strong {
+  color: #fff;
+}
+
+.dispatch-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.unit-input {
+  display: flex;
+}
+
+.unit-input input {
+  flex: 1;
+  background: #0f0f0f;
+  border: 1px solid #333;
+  color: #fff;
+  padding: 8px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.unit-input input:focus {
+  outline: none;
+  border-color: #66ccff;
+}
+
+.dispatch-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.dispatch-buttons button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-dispatch {
+  background: #0099ff;
+  color: #fff;
+}
+
+.btn-dispatch:hover {
+  background: #00aaff;
+}
+
+.btn-escalate {
+  background: #ff6600;
+  color: #fff;
+}
+
+.btn-escalate:hover {
+  background: #ff7722;
+}
+
+.access-denied-notice {
+  background: rgba(255, 51, 51, 0.1);
+  border: 1px solid #ff3333;
+  border-radius: 4px;
+  padding: 12px;
+  color: #ff3333;
+  font-size: 12px;
+  text-align: center;
+}
+
+.incident-statistics {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 12px;
+  margin-top: 16px;
+}
+
+.incident-statistics h4 {
+  margin: 0 0 8px 0;
+  color: #66ccff;
+  font-size: 12px;
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.stat-item {
+  background: #0f0f0f;
+  padding: 8px;
+  border-radius: 4px;
+  font-size: 11px;
+}
+
+.stat-item span {
+  color: #888;
+  display: block;
+}
+
+.stat-item strong {
+  color: #fff;
+  font-size: 13px;
+  display: block;
+  margin-top: 2px;
+}

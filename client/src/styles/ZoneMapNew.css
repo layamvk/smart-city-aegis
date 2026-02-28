@@ -1,0 +1,152 @@
+/* Zone Map Styling - FIXED VERSION */
+.zone-map-container {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 0;
+  height: 100%;
+  min-height: 500px;
+  padding: 0;
+  background: #0f0f0f;
+  border-radius: 0;
+}
+
+.zone-map {
+  border-radius: 0;
+  overflow: hidden;
+  border: none;
+  background: #1a1a1a;
+  height: 100%;
+  width: 100%;
+  display: flex;
+}
+
+.zone-map .leaflet-container {
+  background: #0a0a0a;
+  height: 100%;
+  width: 100%;
+  flex: 1;
+}
+
+.leaflet-control-attribution {
+  background: rgba(0, 0, 0, 0.7);
+  font-size: 11px;
+}
+
+.leaflet-control-zoom {
+  border: 1px solid #374151;
+  background: rgba(15, 15, 15, 0.9);
+}
+
+.leaflet-control-zoom a {
+  color: #E5E7EB;
+  background-color: transparent;
+  border-bottom: 1px solid #374151;
+}
+
+.leaflet-control-zoom a:hover {
+  background-color: rgba(75, 85, 99, 0.3);
+}
+
+.zone-details-panel {
+  background: #1a1a1a;
+  border-left: 1px solid #333;
+  padding: 16px;
+  border-radius: 0;
+  overflow-y: auto;
+  max-height: 100%;
+  min-width: 280px;
+}
+
+.zone-details-panel h3 {
+  margin: 0 0 16px 0;
+  font-size: 14px;
+  color: #fff;
+  text-transform: uppercase;
+  border-bottom: 1px solid #333;
+  padding-bottom: 8px;
+}
+
+.zone-detail {
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #333;
+}
+
+.zone-detail h4 {
+  margin: 0 0 12px 0;
+  font-size: 13px;
+  color: #66ccff;
+}
+
+.risk-indicator {
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  text-align: center;
+  font-size: 12px;
+}
+
+.risk-low {
+  background: rgba(0, 204, 68, 0.2);
+  color: #00cc44;
+  border: 1px solid #00cc44;
+}
+
+.risk-medium {
+  background: rgba(255, 170, 0, 0.2);
+  color: #ffaa00;
+  border: 1px solid #ffaa00;
+}
+
+.risk-high {
+  background: rgba(255, 51, 51, 0.2);
+  color: #ff3333;
+  border: 1px solid #ff3333;
+}
+
+.zone-detail ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 12px;
+}
+
+.zone-detail li {
+  color: #aaa;
+  padding: 4px 0;
+}
+
+.global-status {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #333;
+}
+
+.global-status h4 {
+  margin: 0 0 8px 0;
+  font-size: 13px;
+  color: #66ccff;
+}
+
+.global-status p {
+  margin: 4px 0;
+  font-size: 12px;
+  color: #aaa;
+}
+
+.zone-popup {
+  background: #1a1a1a;
+  color: #fff;
+  padding: 8px;
+}
+
+.zone-popup h4 {
+  margin: 0 0 8px 0;
+  font-size: 13px;
+}
+
+.zone-popup p {
+  margin: 4px 0;
+  font-size: 11px;
+}

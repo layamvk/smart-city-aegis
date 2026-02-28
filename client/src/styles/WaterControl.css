@@ -1,0 +1,227 @@
+/* Water Control Styling */
+.water-control-module {
+  padding: 16px;
+  background: transparent;
+  border-radius: 0;
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.water-control-module .module-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #333;
+  padding-bottom: 12px;
+}
+
+.water-control-module h3 {
+  margin: 0;
+  font-size: 16px;
+  color: #fff;
+}
+
+.water-zones-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.water-zone-card {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.water-zone-card:hover {
+  background: #222;
+  border-color: #444;
+}
+
+.water-zone-card.selected {
+  background: #222;
+  border-color: #66ccff;
+  box-shadow: 0 0 16px rgba(102, 204, 255, 0.2);
+}
+
+.water-zone-card.contaminated {
+  border-color: #ff6600;
+  background: rgba(255, 102, 0, 0.05);
+}
+
+.zone-name {
+  font-weight: bold;
+  font-size: 13px;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.water-level-display {
+  width: 40px;
+  height: 100px;
+  border: 2px solid #333;
+  border-radius: 4px;
+  background: #0a0a0a;
+  overflow: hidden;
+  margin-bottom: 8px;
+  position: relative;
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.water-level-bar {
+  width: 100%;
+  transition: all 0.3s ease;
+}
+
+.zone-stats {
+  width: 100%;
+  text-align: center;
+  font-size: 11px;
+}
+
+.water-level-text {
+  margin: 0;
+  font-weight: bold;
+  color: #fff;
+  font-size: 12px;
+}
+
+.flow-rate {
+  margin: 2px 0;
+  color: #aaa;
+  font-size: 10px;
+}
+
+.contamination-warning {
+  margin: 4px 0 0 0;
+  color: #ff6600;
+  font-weight: bold;
+  font-size: 10px;
+}
+
+.water-detail-panel {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 16px;
+  margin-top: 16px;
+}
+
+.water-detail-panel h4 {
+  margin: 0 0 12px 0;
+  color: #66ccff;
+  font-size: 14px;
+}
+
+.detail-info {
+  background: #0f0f0f;
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+  font-size: 12px;
+}
+
+.detail-info p {
+  margin: 6px 0;
+  color: #aaa;
+}
+
+.detail-info strong {
+  color: #fff;
+}
+
+.control-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.flow-adjustment {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+}
+
+.flow-adjustment input {
+  background: #0f0f0f;
+  border: 1px solid #333;
+  color: #fff;
+  padding: 8px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.flow-adjustment input:focus {
+  outline: none;
+  border-color: #66ccff;
+}
+
+.btn-adjust {
+  background: #0066ff;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 12px;
+  transition: all 0.2s ease;
+}
+
+.btn-adjust:hover {
+  background: #0080ff;
+}
+
+.btn-shutdown {
+  background: #ff3333;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 12px;
+  transition: all 0.2s ease;
+}
+
+.btn-shutdown:hover {
+  background: #ff5555;
+}
+
+.contamination-alert {
+  background: rgba(255, 102, 0, 0.1);
+  border: 1px solid #ff6600;
+  border-radius: 6px;
+  padding: 12px;
+  margin-top: 16px;
+}
+
+.contamination-alert h4 {
+  margin: 0 0 8px 0;
+  color: #ff6600;
+  font-size: 12px;
+}
+
+.contamination-alert ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 11px;
+}
+
+.contamination-alert li {
+  color: #ff6600;
+  padding: 4px 0;
+}

@@ -1,0 +1,389 @@
+.management-page {
+    position: relative;
+    z-index: 10;
+    padding: 24px;
+    height: 100%;
+    overflow-y: auto;
+    color: #E6F1FF;
+    pointer-events: auto;
+    filter: none;
+    opacity: 1;
+}
+
+.mgmt-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.mgmt-header h2 {
+    font-size: 24px;
+    letter-spacing: 0.25em;
+    font-weight: 900;
+    color: #fff;
+    text-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+    margin: 0;
+}
+
+.system-pill {
+    font-size: 9px;
+    background: rgba(0, 240, 255, 0.1);
+    color: #00F0FF;
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 240, 255, 0.2);
+    font-weight: 700;
+}
+
+.system-pill.danger {
+    background: rgba(255, 61, 61, 0.1);
+    color: #FF3D3D;
+    border-color: rgba(255, 61, 61, 0.2);
+}
+
+.mgmt-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.mgmt-grid {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 32px;
+}
+
+.mgmt-section h3 {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.2em;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+/* Sector Accordion Styles */
+.sector-accordion-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 12px;
+}
+
+.sector-accordion {
+    background: rgba(15, 20, 30, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.sector-accordion:hover {
+    border-color: rgba(255, 255, 255, 0.15);
+    background: rgba(20, 25, 35, 0.75);
+}
+
+.sector-header {
+    padding: 24px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: transparent;
+}
+
+.sector-title-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.sector-name {
+    font-size: 18px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: 0.1em;
+}
+
+.sector-stats-summary {
+    display: flex;
+    gap: 16px;
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+}
+
+.sector-status-badge {
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+}
+
+/* Area Card Styles */
+.sector-content {
+    padding: 0 24px 24px 24px;
+    background: rgba(0, 0, 0, 0.2);
+    animation: slideDown 0.4s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.areas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+    margin-top: 8px;
+}
+
+.area-control-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    padding: 16px;
+    transition: all 0.3s ease;
+}
+
+.area-control-card:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.area-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+}
+
+.area-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.area-sub {
+    display: block;
+    font-size: 9px;
+    color: rgba(255, 255, 255, 0.4);
+    margin-top: 4px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+.area-risk-badge {
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+}
+
+.area-metrics-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.metric-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.metric-top label {
+    font-size: 9px;
+    color: rgba(255, 255, 255, 0.4);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+}
+
+.metric-top span {
+    font-size: 11px;
+    font-weight: 800;
+    color: #fff;
+}
+
+.area-bar-bg {
+    height: 4px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.area-bar-fg {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 1s ease-in-out;
+}
+
+.area-stats-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 40px;
+    align-items: center;
+    gap: 12px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.area-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.area-stat label {
+    font-size: 7px;
+    color: rgba(255, 255, 255, 0.3);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+}
+
+.area-stat span {
+    font-size: 12px;
+    font-weight: 800;
+    color: #fff;
+}
+
+.area-stat small {
+    font-size: 8px;
+    opacity: 0.5;
+}
+
+.mini-trend svg {
+    filter: drop-shadow(0 0 4px currentColor);
+}
+
+/* Status dots */
+.status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+}
+
+.status-dot.pulsing {
+    animation: dotPulse 2s infinite ease-in-out;
+}
+
+@keyframes dotPulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.4);
+        opacity: 0.6;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Corridor Flow Card V2 */
+.corridors-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.corridor-card-v2 {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.3s ease;
+}
+
+.corridor-card-v2:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(0, 240, 255, 0.3);
+}
+
+.corridor-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.c-id {
+    font-size: 11px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.c-speed {
+    font-size: 13px;
+    font-weight: 800;
+    color: #00F0FF;
+}
+
+.corridor-bar-bg {
+    height: 6px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 12px;
+}
+
+.corridor-bar-fg {
+    height: 100%;
+    border-radius: 3px;
+}
+
+.corridor-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 8px;
+    color: rgba(255, 255, 255, 0.4);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+}
+
+/* Buttons */
+.btn-secondary {
+    background: rgba(0, 240, 255, 0.1);
+    border: 1px solid #00F0FF;
+    color: #00F0FF;
+    padding: 8px 16px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    border-radius: 6px;
+}
+
+.btn-danger {
+    background: rgba(255, 61, 61, 0.1);
+    border: 1px solid #FF3D3D;
+    color: #FF3D3D;
+    padding: 8px 16px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    border-radius: 6px;
+}

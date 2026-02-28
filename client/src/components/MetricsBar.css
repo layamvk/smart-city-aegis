@@ -1,0 +1,94 @@
+.metrics-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 52px;
+    background: var(--panel-opaque);
+    border-top: 1px solid var(--border-t-l);
+    backdrop-filter: blur(24px);
+    z-index: 1500;
+    display: flex;
+    align-items: center;
+    padding: 0 32px;
+    box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.4);
+}
+
+.metric-cell {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 20px;
+    min-width: 100px;
+}
+
+.mc-label {
+    font-size: 7px;
+    font-weight: 700;
+    color: #4B6080;
+    letter-spacing: 0.15em;
+    margin-bottom: 3px;
+}
+
+.mc-value {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1;
+    transition: color var(--transition-normal) var(--ease-smooth);
+    letter-spacing: -0.01em;
+}
+
+.mc-trend {
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.mc-bar-bg {
+    height: 2px;
+    background: rgba(255, 255, 255, 0.05);
+    margin-top: 4px;
+    border-radius: 1px;
+    overflow: hidden;
+}
+
+.mc-bar-fg {
+    height: 100%;
+    border-radius: 1px;
+    transition: width 1s ease;
+}
+
+.mb-divider {
+    width: 1px;
+    height: 24px;
+    background: rgba(255, 255, 255, 0.05);
+    flex-shrink: 0;
+}
+
+.status-cell {
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    min-width: auto;
+}
+
+.live-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #00FF64;
+    box-shadow: 0 0 12px rgba(0, 255, 100, 0.4);
+    animation: liveBlink 3s var(--ease-smooth) infinite;
+    flex-shrink: 0;
+}
+
+@keyframes liveBlink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.3;
+    }
+}
