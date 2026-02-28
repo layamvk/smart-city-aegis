@@ -74,32 +74,25 @@ export const CityEngineProvider = ({ children }) => {
     const [grid, setGrid] = useState(GRID_INFRA);
     const [lights, setLights] = useState(LIGHT_INFRA);
 
-    const [zones, setZones] = useState(() => {
-        const init = {};
-        RAW_ZONES.forEach(z => {
-            const feat = createFeature(z.id, z.name, z.type, z.coords);
-            if (feat) {
-                init[z.id] = {
-                    ...z,
-                    riskScore: 20 + Math.random() * 30,
-                    status: 'NORMAL',
-                    feature: feat,
-                    riskHistory: Array.from({ length: 12 }, () => 15 + Math.random() * 10),
-                };
-            }
-        });
-        return init;
-    });
+    const [zones, setZones] = useState({});
 
     useEffect(() => {
-        fetch('/0f0ccbda-9485-4964-b3b1-6ce53af82bbb.kml')
-            .then(res => res.text())
+        const kmlPath = '/0f0ccbda-9485-4964-b3b1-6ce53af82bbb.kml';
+        console.log(`[CORE] Attempting to load real boundaries from: ${kmlPath}`);
+
+        fetch(kmlPath)
+            .then(res => {
+                if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+                return res.text();
+            })
             .then(text => {
+                console.log(`[CORE] KML data received (${text.length} bytes), parsing...`);
                 const geojson = convertKMLString(text);
                 if (geojson && geojson.features.length) {
+                    console.log(`[CORE] Successfully parsed ${geojson.features.length} ward features`);
                     const initZones = {};
                     geojson.features.forEach((f, i) => {
-                        const id = f.properties.name || `Ward-${i}`;
+                        const id = f.properties.name || f.properties.ZONE_NAME || `Ward-${i}`;
                         initZones[id] = {
                             ...f.properties,
                             name: id,
@@ -116,16 +109,19 @@ export const CityEngineProvider = ({ children }) => {
                             status: 'NORMAL',
                             lastUpdated: Date.now(),
                             feature: f,
-                            riskHistory: Array.from({ length: 10 }, () => 20 + Math.random() * 20),
+                            riskHistory: Array.from({ length: 12 }, () => 15 + Math.random() * 15),
                         };
-                        // set feature id explicitly for map bindings
                         f.id = id;
                         f.properties.id = id;
                     });
                     setZones(initZones);
+                } else {
+                    console.error('[CORE] KML parsed but yielded no features.');
                 }
             })
-            .catch(console.error);
+            .catch(err => {
+                console.error('[CORE] Critical error loading KML:', err);
+            });
     }, []);
 
     // --- ACTIONS ---
