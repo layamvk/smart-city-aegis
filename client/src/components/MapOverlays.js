@@ -4,14 +4,14 @@ import { useCityEngine } from '../engine/CityEngine';
 import { useMapContext } from '../context/MapContext';
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
-const mkDotIcon = (color, size = 8) =>
+const mkDotIcon = (color, size = 10) =>
   L.divIcon({
     className: 'map-marker-dot marker-reveal',
     html: `<div style="
       width:${size}px;height:${size}px;border-radius:50%;
       background:${color};
-      border:1px solid rgba(255,255,255,0.4);
-      box-shadow:0 0 12px ${color}33;
+      border:1.5px solid rgba(255,255,255,0.7);
+      box-shadow:0 0 15px ${color};
     "></div>`,
     iconSize: [size, size],
     iconAnchor: [size / 2, size / 2],
@@ -29,7 +29,6 @@ const MapOverlays = ({ activeZone, onZoneClick, onNodeClick }) => {
   const infraRef = useRef({ traffic: null, water: null, power: null, lights: null });
   const featureCountRef = useRef(0);
 
-  // Wait for map instance
   useEffect(() => {
     let timer;
     const check = () => {
@@ -51,7 +50,6 @@ const MapOverlays = ({ activeZone, onZoneClick, onNodeClick }) => {
 
     const zoneKeys = Object.keys(zones || {});
 
-    // Check if we need a full rebuild (e.g. data swapped from RAW to KML)
     if (geoJsonRef.current && zoneKeys.length !== featureCountRef.current) {
       zonesLayer.removeLayer(geoJsonRef.current);
       geoJsonRef.current = null;
@@ -68,7 +66,8 @@ const MapOverlays = ({ activeZone, onZoneClick, onNodeClick }) => {
 
     if (geoJsonRef.current) {
       geoJsonRef.current.eachLayer(layer => {
-        const id = layer.feature?.id || layer.feature?.properties?.id || layer.feature?.properties?.name;
+        const feat = layer.feature;
+        const id = feat?.id || feat?.properties?.id || feat?.properties?.name;
         const z = zones?.[id] || {};
         const isActive = id === activeZone;
         const risk = z.riskScore || 0;
@@ -77,23 +76,23 @@ const MapOverlays = ({ activeZone, onZoneClick, onNodeClick }) => {
         if (risk >= 70) riskColor = '#FF3D3D';
         else if (risk >= 30) riskColor = '#FFA500';
 
-        const isLine = layer.feature?.geometry?.type?.includes('Line');
+        const hasPolygon = JSON.stringify(feat?.geometry).includes('Polygon');
 
         if (isActive) {
           layer.setStyle({
             color: '#FFFFFF',
-            weight: 3,
+            weight: 4,
             fillColor: riskColor,
-            fillOpacity: isLine ? 0 : 0.35,
+            fillOpacity: hasPolygon ? 0.4 : 0,
             opacity: 1
           });
         } else {
           layer.setStyle({
             color: '#4FD1FF',
-            weight: isLine ? 2 : 1.5,
+            weight: 2.5,
             fillColor: '#4FD1FF',
-            fillOpacity: isLine ? 0 : 0.05,
-            opacity: 0.8
+            fillOpacity: hasPolygon ? 0.1 : 0,
+            opacity: 0.9
           });
         }
       });
@@ -110,13 +109,13 @@ const MapOverlays = ({ activeZone, onZoneClick, onNodeClick }) => {
 
     geoJsonRef.current = L.geoJSON(geojsonData, {
       style: (feature) => {
-        const isLine = feature.geometry.type.includes('Line');
+        const hasPolygon = JSON.stringify(feature.geometry).includes('Polygon');
         return {
           color: "#4FD1FF",
-          weight: isLine ? 2 : 1.5,
+          weight: 2.5,
           fillColor: '#4FD1FF',
-          fillOpacity: isLine ? 0 : 0.05,
-          opacity: 0.8
+          fillOpacity: hasPolygon ? 0.1 : 0,
+          opacity: 0.9
         };
       },
       onEachFeature: (feature, layer) => {
@@ -130,43 +129,39 @@ const MapOverlays = ({ activeZone, onZoneClick, onNodeClick }) => {
 
         layer.on("mouseover", () => {
           if (activeZone === id) return;
-          layer.setStyle({ weight: 3, opacity: 1 });
+          layer.setStyle({ weight: 4, opacity: 1, fillOpacity: 0.2 });
         });
 
         layer.on("mouseout", () => {
           if (activeZone === id) return;
-          const isLine = feature.geometry.type.includes('Line');
-          layer.setStyle({ weight: isLine ? 2 : 1.5, opacity: 0.8 });
+          const hasPolygon = JSON.stringify(feature.geometry).includes('Polygon');
+          layer.setStyle({ weight: 2.5, opacity: 0.9, fillOpacity: hasPolygon ? 0.1 : 0 });
         });
 
         layer.bindTooltip(`<strong>${id}</strong>`, { sticky: true, className: 'map-tooltip' });
       }
     }).addTo(zonesLayer);
 
-    // Zoom to boundaries
     if (map && geoJsonRef.current && geojsonData.features.length > 0) {
       try {
         const bounds = geoJsonRef.current.getBounds();
         if (bounds.isValid()) {
-          map.fitBounds(bounds, { padding: [40, 40] });
+          map.fitBounds(bounds, { padding: [50, 50] });
         }
-      } catch (e) {
-        console.error("Fit bounds error", e);
-      }
+      } catch (e) { }
     }
   }, [mapRef, layersRef, zones, activeZone, onZoneClick, emit]);
 
   // ── Infrastructure Markers ────────────────────────────────────────────────
   const buildInfraMarkers = useCallback(() => {
-    const map = mapRef.current;
-    if (!map || !layersRef.current) return;
+    if (!mapRef.current || !layersRef.current) return;
     const { traffic: tLayer, water: wLayer, grid: gLayer } = layersRef.current;
 
     if (!infraRef.current.traffic) infraRef.current.traffic = L.layerGroup().addTo(tLayer);
     infraRef.current.traffic.clearLayers();
     traffic.junctions.forEach(j => {
       const col = j.phase === 'GREEN' ? '#00FF64' : j.phase === 'RED' ? '#FF3D3D' : '#FFBF00';
-      const m = L.marker([j.lat, j.lng], { icon: mkDotIcon(col, 6) }).addTo(infraRef.current.traffic);
+      const m = L.marker([j.lat, j.lng], { icon: mkDotIcon(col, 8) }).addTo(infraRef.current.traffic);
       m.bindTooltip(`Junction: ${j.id.toUpperCase()}`);
       m.on('click', (e) => {
         L.DomEvent.stopPropagation(e);
@@ -177,7 +172,7 @@ const MapOverlays = ({ activeZone, onZoneClick, onNodeClick }) => {
     if (!infraRef.current.water) infraRef.current.water = L.layerGroup().addTo(wLayer);
     infraRef.current.water.clearLayers();
     water.reservoirs.forEach(r => {
-      const m = L.marker([r.lat, r.lng], { icon: mkDotIcon('#3B82F6', 8) }).addTo(infraRef.current.water);
+      const m = L.marker([r.lat, r.lng], { icon: mkDotIcon('#3B82F6', 10) }).addTo(infraRef.current.water);
       m.bindTooltip(`Reservoir: ${r.id}`);
       m.on('click', (e) => {
         L.DomEvent.stopPropagation(e);
@@ -188,7 +183,7 @@ const MapOverlays = ({ activeZone, onZoneClick, onNodeClick }) => {
     if (!infraRef.current.power) infraRef.current.power = L.layerGroup().addTo(gLayer);
     infraRef.current.power.clearLayers();
     grid.substations.forEach(s => {
-      const m = L.marker([s.lat, s.lng], { icon: mkDotIcon('#F59E0B', 8) }).addTo(infraRef.current.power);
+      const m = L.marker([s.lat, s.lng], { icon: mkDotIcon('#F59E0B', 10) }).addTo(infraRef.current.power);
       m.bindTooltip(`Substation: ${s.id}`);
       m.on('click', (e) => {
         L.DomEvent.stopPropagation(e);
@@ -202,7 +197,7 @@ const MapOverlays = ({ activeZone, onZoneClick, onNodeClick }) => {
     if (!infraRef.current.lights) infraRef.current.lights = L.layerGroup().addTo(layersRef.current.incidents);
     infraRef.current.lights.clearLayers();
     lights.clusters.forEach(c => {
-      const m = L.marker([c.lat, c.lng], { icon: mkDotIcon('#FFD700', 4) }).addTo(infraRef.current.lights);
+      const m = L.marker([c.lat, c.lng], { icon: mkDotIcon('#FFD700', 6) }).addTo(infraRef.current.lights);
       m.on('click', (e) => {
         L.DomEvent.stopPropagation(e);
         if (onNodeClick) onNodeClick({ type: 'lights', ...c });
@@ -210,7 +205,6 @@ const MapOverlays = ({ activeZone, onZoneClick, onNodeClick }) => {
     });
   }, [mapRef, layersRef, lights, onNodeClick]);
 
-  // Sync state to map
   useEffect(() => {
     if (mapReady) {
       buildZoneLayer();

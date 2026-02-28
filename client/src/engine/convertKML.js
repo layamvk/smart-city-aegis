@@ -12,9 +12,8 @@ export function convertKMLString(kmlText) {
     }
 
     geojson.features = geojson.features.filter(f => {
-        if (!f || !f.geometry || !f.geometry.type || !f.geometry.coordinates) return false;
-        const t = f.geometry.type;
-        return t === "Polygon" || t === "MultiPolygon" || t === "LineString" || t === "MultiLineString";
+        if (!f || !f.geometry || !f.geometry.type) return false;
+        return true;
     });
 
     return geojson;
