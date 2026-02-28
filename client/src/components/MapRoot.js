@@ -7,7 +7,7 @@ import MapOverlays from './MapOverlays';
 const TILE_URL = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
 
 const MapRoot = ({ enabled = true, activeZone, onZoneClick, onNodeClick }) => {
-  const { mapRef, containerRef, layersRef } = useMapContext();
+  const { mapRef, setMapInstance, containerRef, layersRef } = useMapContext();
   const initRef = useRef(false);
 
   useEffect(() => {
@@ -36,6 +36,7 @@ const MapRoot = ({ enabled = true, activeZone, onZoneClick, onNodeClick }) => {
     L.control.zoom({ position: 'topright' }).addTo(map);
 
     mapRef.current = map;
+    setMapInstance(map);
 
     // Add layer groups to map once
     Object.values(layersRef.current).forEach(lg => lg.addTo(map));
@@ -48,6 +49,7 @@ const MapRoot = ({ enabled = true, activeZone, onZoneClick, onNodeClick }) => {
     return () => {
       map.remove();
       mapRef.current = null;
+      setMapInstance(null);
       initRef.current = false;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps

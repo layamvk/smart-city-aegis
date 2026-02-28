@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useMemo, useRef } from 'react';
+import React, { createContext, useContext, useMemo, useRef, useState } from 'react';
 import L from 'leaflet';
 
 const MapContext = createContext(null);
@@ -10,6 +10,7 @@ export const useMapContext = () => {
 };
 
 export const MapProvider = ({ children }) => {
+  const [mapInstance, setMapInstance] = useState(null);
   const mapRef = useRef(null);
   const containerRef = useRef(null);
 
@@ -26,11 +27,13 @@ export const MapProvider = ({ children }) => {
 
   const value = useMemo(
     () => ({
+      mapInstance,
+      setMapInstance,
       mapRef,
       containerRef,
       layersRef,
     }),
-    []
+    [mapInstance]
   );
 
   return <MapContext.Provider value={value}>{children}</MapContext.Provider>;
