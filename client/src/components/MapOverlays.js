@@ -17,14 +17,6 @@ const mkDotIcon = (color, size = 8) =>
     iconAnchor: [size / 2, size / 2],
   });
 
-const ZONE_COLORS = {
-  Residential: '#20B2AA',
-  Industrial: '#FFBF00',
-  Commercial: '#00FFFF',
-  'IT Corridor': '#007FFF',
-  Port: '#FF8C00',
-  Defense: '#FF0000',
-};
 // Helper removed
 
 const MapOverlays = ({ activeZone, onZoneClick, onNodeClick }) => {
