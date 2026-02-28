@@ -1,161 +1,177 @@
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef } from 'react';
 import L from 'leaflet';
 import { useCityEngine } from '../engine/CityEngine';
 import { useMapContext } from '../context/MapContext';
 
-// ─── Helpers ────────────────────────────────────────────────────────────────
-const mkDotIcon = (color, size = 10, shadow = true) =>
-  L.divIcon({
-    className: 'map-marker-dot marker-reveal',
+// ─── Icon Factory ────────────────────────────────────────────────────────────
+function dot(color, size) {
+  return L.divIcon({
+    className: '',
     html: `<div style="
       width:${size}px;height:${size}px;border-radius:50%;
-      background:${color};
-      border:1.5px solid #FFFFFF;
-      ${shadow ? `box-shadow: 0 0 12px ${color}, 0 0 24px ${color}66;` : ''}
+      background:${color};border:1.5px solid rgba(255,255,255,0.8);
+      box-shadow:0 0 10px ${color}99;
     "></div>`,
     iconSize: [size, size],
     iconAnchor: [size / 2, size / 2],
   });
+}
 
+// ─── Main Component ──────────────────────────────────────────────────────────
 const MapOverlays = ({ activeZone, onZoneClick, onNodeClick }) => {
   const { mapInstance, layersRef } = useMapContext();
-  const {
-    zones, traffic, water, grid, lights,
-    emit,
-  } = useCityEngine();
+  const { zones, traffic, water, grid, lights, emit } = useCityEngine();
 
-  const geoJsonRef = useRef(null);
+  // Store the last rendered geoJSON layer so we can replace it
+  const zoneLayerRef = useRef(null);
+  const prevZoneCountRef = useRef(0);
 
-  // ── Zones Layer ──────────────────────────────────────────────────────────
-  const buildZoneLayer = useCallback(() => {
+  // ── 1. Render Ward Boundaries ─────────────────────────────────────────────
+  useEffect(() => {
     if (!mapInstance || !layersRef.current) return;
-    const zonesLayer = layersRef.current.zones;
 
+    const zonesLayer = layersRef.current.zones;
     const zoneKeys = Object.keys(zones || {});
 
-    // Total clear to ensure no ghosting and fresh data
-    zonesLayer.clearLayers();
-    geoJsonRef.current = null;
+    // Clear previous layer completely
+    if (zoneLayerRef.current) {
+      zonesLayer.removeLayer(zoneLayerRef.current);
+      zoneLayerRef.current = null;
+    }
 
     if (zoneKeys.length === 0) return;
 
-    const geojsonData = {
-      type: "FeatureCollection",
-      features: zoneKeys.map(k => zones[k].feature).filter(Boolean)
-    };
+    const features = zoneKeys
+      .map(k => zones[k]?.feature)
+      .filter(f => f && f.geometry);
 
-    if (geojsonData.features.length === 0) return;
+    if (features.length === 0) return;
 
-    geoJsonRef.current = L.geoJSON(geojsonData, {
-      style: (feature) => {
+    const geojson = { type: 'FeatureCollection', features };
+
+    zoneLayerRef.current = L.geoJSON(geojson, {
+      style: feature => {
         const id = feature.id || feature.properties?.id || feature.properties?.name;
         const isActive = id === activeZone;
-        const z = zones[id] || {};
-        const risk = z.riskScore || 0;
-
-        let riskColor = '#00FF64';
-        if (risk >= 70) riskColor = '#FF3D3D';
-        else if (risk >= 30) riskColor = '#FFA500';
-
-        const isPoly = JSON.stringify(feature.geometry).includes('Polygon');
-
+        const isPolygon = feature.geometry?.type?.includes('Polygon');
         return {
-          color: isActive ? "#FFFFFF" : "#00E5FF",
-          weight: isActive ? 4 : 1.5,
-          fillColor: isActive ? riskColor : "#00E5FF",
-          fillOpacity: isPoly ? (isActive ? 0.35 : 0.05) : 0,
-          opacity: 0.85
+          color: isActive ? '#FFFFFF' : '#00E5FF',
+          weight: isActive ? 3.5 : 1.5,
+          opacity: isActive ? 1 : 0.85,
+          fillColor: '#00E5FF',
+          fillOpacity: isPolygon ? (isActive ? 0.3 : 0.05) : 0,
         };
       },
       onEachFeature: (feature, layer) => {
         const id = feature.id || feature.properties?.id || feature.properties?.name;
 
-        layer.on("click", (e) => {
+        layer.on('click', e => {
           L.DomEvent.stopPropagation(e);
-          if (onZoneClick) onZoneClick(id, zones?.[id] || {});
+          if (onZoneClick) onZoneClick(id, zones[id] || {});
           emit('ZONE_SELECTED', { zone: id });
         });
 
-        layer.on("mouseover", () => {
-          if (activeZone === id) return;
-          layer.setStyle({ weight: 3, opacity: 1, color: '#FFFFFF' });
+        layer.on('mouseover', () => {
+          if (id === activeZone) return;
+          layer.setStyle({ weight: 3, color: '#FFFFFF', opacity: 1 });
+        });
+        layer.on('mouseout', () => {
+          if (id === activeZone) return;
+          layer.setStyle({ weight: 1.5, color: '#00E5FF', opacity: 0.85 });
         });
 
-        layer.on("mouseout", () => {
-          if (activeZone === id) return;
-          layer.setStyle({ weight: 1.5, opacity: 0.85, color: '#00E5FF' });
-        });
-
-        layer.bindTooltip(`<strong>${id}</strong>`, { sticky: true, className: 'map-tooltip' });
-      }
+        layer.bindTooltip(`<b>${id}</b>`, { sticky: true, className: 'map-tooltip' });
+      },
     }).addTo(zonesLayer);
 
-    // Fit view on first data load
-    if (mapInstance && geoJsonRef.current) {
-      const bounds = geoJsonRef.current.getBounds();
-      if (bounds.isValid()) {
-        mapInstance.fitBounds(bounds, { padding: [50, 50] });
-      }
+    // Auto-fit on first real load
+    if (features.length !== prevZoneCountRef.current) {
+      prevZoneCountRef.current = features.length;
+      try {
+        const bounds = zoneLayerRef.current.getBounds();
+        if (bounds.isValid()) mapInstance.fitBounds(bounds, { padding: [50, 50] });
+      } catch (_) { }
     }
-  }, [mapInstance, layersRef, zones, activeZone, onZoneClick, emit]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mapInstance, zones, activeZone]);
 
-  // ── Infrastructure Markers ────────────────────────────────────────────────
-  const buildInfraMarkers = useCallback(() => {
-    if (!mapInstance || !layersRef.current) return;
-    const { traffic: tLayer, water: wLayer, grid: gLayer, incidents: lLayer } = layersRef.current;
-
-    // 1. Traffic Junctions
-    tLayer.clearLayers();
-    traffic.junctions.forEach(j => {
-      const col = j.phase === 'GREEN' ? '#00FF64' : j.phase === 'RED' ? '#FF3D3D' : '#FFD600';
-      const m = L.marker([j.lat, j.lng], { icon: mkDotIcon(col, 10) }).addTo(tLayer);
-      m.on('click', () => onNodeClick && onNodeClick({ type: 'traffic', ...j }));
-    });
-
-    // 2. Water Infrastructure (Pump Stations + Reservoirs + Valves)
-    wLayer.clearLayers();
-    water.reservoirs.forEach(r => {
-      L.marker([r.lat, r.lng], { icon: mkDotIcon('#00E5FF', 14) }).addTo(wLayer)
-        .on('click', () => onNodeClick && onNodeClick({ type: 'water', ...r }));
-    });
-    water.pumpStations.forEach(p => {
-      L.marker([p.lat, p.lng], { icon: mkDotIcon('#0091FF', 10, false) }).addTo(wLayer)
-        .on('click', () => onNodeClick && onNodeClick({ type: 'water', ...p }));
-    });
-    water.valves.forEach(v => {
-      L.marker([v.lat, v.lng], { icon: mkDotIcon('#00D1FF', 8, false) }).addTo(wLayer)
-        .on('click', () => onNodeClick && onNodeClick({ type: 'water', ...v }));
-    });
-
-    // 3. Electricity Grid (Substations + Feeders)
-    gLayer.clearLayers();
-    grid.substations.forEach(s => {
-      L.marker([s.lat, s.lng], { icon: mkDotIcon('#FF8C00', 14) }).addTo(gLayer)
-        .on('click', () => onNodeClick && onNodeClick({ type: 'grid', ...s }));
-    });
-    // Add point markers for feeders if they have coordinates (they usually don't in mock, but let's check)
-    if (grid.feeders) {
-      // Feeders in mock don't have coords, but let's interpolate or skip
-    }
-
-    // 4. Street Lights (Clusters)
-    lLayer.clearLayers();
-    if (lights?.clusters) {
-      lights.clusters.forEach(c => {
-        L.marker([c.lat, c.lng], { icon: mkDotIcon('#FFEA00', 6, false) }).addTo(lLayer)
-          .on('click', () => onNodeClick && onNodeClick({ type: 'lights', ...c }));
-      });
-    }
-
-  }, [mapInstance, layersRef, traffic, water, grid, lights, onNodeClick]);
-
-  // Main Sync Effect
+  // ── 2. Render Traffic Junctions ───────────────────────────────────────────
   useEffect(() => {
-    if (mapInstance) {
-      buildZoneLayer();
-      buildInfraMarkers();
-    }
-  }, [mapInstance, zones, traffic, water, grid, lights, buildZoneLayer, buildInfraMarkers]);
+    if (!mapInstance || !layersRef.current) return;
+    const layer = layersRef.current.traffic;
+    layer.clearLayers();
+
+    (traffic?.junctions || []).forEach(j => {
+      const color =
+        j.phase === 'GREEN' ? '#00FF64' :
+          j.phase === 'RED' ? '#FF3D3D' : '#FFD600';
+      L.marker([j.lat, j.lng], { icon: dot(color, 10) })
+        .bindTooltip(`Junction: ${j.id}`)
+        .on('click', () => onNodeClick?.({ type: 'traffic', ...j }))
+        .addTo(layer);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mapInstance, traffic]);
+
+  // ── 3. Render Water Infrastructure ────────────────────────────────────────
+  useEffect(() => {
+    if (!mapInstance || !layersRef.current) return;
+    const layer = layersRef.current.water;
+    layer.clearLayers();
+
+    (water?.reservoirs || []).forEach(r => {
+      L.marker([r.lat, r.lng], { icon: dot('#00BFFF', 14) })
+        .bindTooltip(`Reservoir: ${r.id}`)
+        .on('click', () => onNodeClick?.({ type: 'water', ...r }))
+        .addTo(layer);
+    });
+
+    (water?.pumpStations || []).forEach(p => {
+      L.marker([p.lat, p.lng], { icon: dot('#38BDF8', 9) })
+        .bindTooltip(`Pump: ${p.id}`)
+        .on('click', () => onNodeClick?.({ type: 'water', ...p }))
+        .addTo(layer);
+    });
+
+    (water?.valves || []).forEach(v => {
+      L.marker([v.lat, v.lng], { icon: dot('#7DD3FC', 7) })
+        .bindTooltip(`Valve: ${v.id}`)
+        .on('click', () => onNodeClick?.({ type: 'water', ...v }))
+        .addTo(layer);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mapInstance, water]);
+
+  // ── 4. Render Grid Substations ────────────────────────────────────────────
+  useEffect(() => {
+    if (!mapInstance || !layersRef.current) return;
+    const layer = layersRef.current.grid;
+    layer.clearLayers();
+
+    (grid?.substations || []).forEach(s => {
+      const color = s.status === 'WARNING' ? '#FF3D3D' : '#FF8C00';
+      L.marker([s.lat, s.lng], { icon: dot(color, 12) })
+        .bindTooltip(`Substation: ${s.id}`)
+        .on('click', () => onNodeClick?.({ type: 'grid', ...s }))
+        .addTo(layer);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mapInstance, grid]);
+
+  // ── 5. Render Street Light Clusters ──────────────────────────────────────
+  useEffect(() => {
+    if (!mapInstance || !layersRef.current) return;
+    const layer = layersRef.current.incidents;
+    layer.clearLayers();
+
+    (lights?.clusters || []).forEach(c => {
+      L.marker([c.lat, c.lng], { icon: dot('#FACC15', 8) })
+        .bindTooltip(`Lights: ${c.id}`)
+        .on('click', () => onNodeClick?.({ type: 'lights', ...c }))
+        .addTo(layer);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mapInstance, lights]);
 
   return null;
 };

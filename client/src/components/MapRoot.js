@@ -36,10 +36,14 @@ const MapRoot = ({ enabled = true, activeZone, onZoneClick, onNodeClick }) => {
     L.control.zoom({ position: 'topright' }).addTo(map);
 
     mapRef.current = map;
-    setMapInstance(map);
 
-    // Add layer groups to map once
+    // CRITICAL: Add all layer groups to map BEFORE calling setMapInstance.
+    // MapOverlays listens to mapInstance and immediately tries to render
+    // into these layers. If they're not on the map yet, addTo() fails silently.
     Object.values(layersRef.current).forEach(lg => lg.addTo(map));
+
+    // Now safe to notify overlays the map is ready
+    setMapInstance(map);
 
     // Force size validation
     setTimeout(() => {
