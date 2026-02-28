@@ -1,20 +1,23 @@
 import * as toGeoJSON from "@tmcw/togeojson";
 
 export function convertKMLString(kmlText) {
-    const parser = new DOMParser();
-    const kml = parser.parseFromString(kmlText, "text/xml");
-    const geojson = toGeoJSON.kml(kml);
+    try {
+        const parser = new DOMParser();
+        const kml = parser.parseFromString(kmlText, "text/xml");
+        const geojson = toGeoJSON.kml(kml);
 
-    // Validate output
-    if (!geojson || geojson.type !== "FeatureCollection") {
-        console.warn("Invalid GeoJSON output from KML");
+        if (!geojson || !geojson.features) {
+            console.warn("KML produced no features");
+            return { type: "FeatureCollection", features: [] };
+        }
+
+        // Keep all valid features from KML (boundaries, points, etc)
+        geojson.features = geojson.features.filter(f => f && f.geometry);
+
+        console.log(`[KML] Extracted ${geojson.features.length} features`);
+        return geojson;
+    } catch (e) {
+        console.error("KML Parse error", e);
         return { type: "FeatureCollection", features: [] };
     }
-
-    geojson.features = geojson.features.filter(f => {
-        if (!f || !f.geometry || !f.geometry.type) return false;
-        return true;
-    });
-
-    return geojson;
 }
