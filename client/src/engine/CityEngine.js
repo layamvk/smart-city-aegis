@@ -74,7 +74,22 @@ export const CityEngineProvider = ({ children }) => {
     const [grid, setGrid] = useState(GRID_INFRA);
     const [lights, setLights] = useState(LIGHT_INFRA);
 
-    const [zones, setZones] = useState({});
+    const [zones, setZones] = useState(() => {
+        const init = {};
+        RAW_ZONES.forEach(z => {
+            const feat = createFeature(z.id, z.name, z.type, z.coords);
+            if (feat) {
+                init[z.id] = {
+                    ...z,
+                    riskScore: 20 + Math.random() * 30,
+                    status: 'NORMAL',
+                    feature: feat,
+                    riskHistory: Array.from({ length: 12 }, () => 15 + Math.random() * 10),
+                };
+            }
+        });
+        return init;
+    });
 
     useEffect(() => {
         fetch('/0f0ccbda-9485-4964-b3b1-6ce53af82bbb.kml')

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, useCallback, useState } from 'react';
 import L from 'leaflet';
 import { useCityEngine } from '../engine/CityEngine';
 import { useMapContext } from '../context/MapContext';
@@ -17,8 +17,6 @@ const mkDotIcon = (color, size = 8) =>
     iconAnchor: [size / 2, size / 2],
   });
 
-// Helper removed
-
 const MapOverlays = ({ activeZone, onZoneClick, onNodeClick }) => {
   const { mapRef, layersRef } = useMapContext();
   const {
@@ -26,21 +24,40 @@ const MapOverlays = ({ activeZone, onZoneClick, onNodeClick }) => {
     emit,
   } = useCityEngine();
 
+  const [mapReady, setMapReady] = useState(false);
   const geoJsonRef = useRef(null);
   const infraRef = useRef({ traffic: null, water: null, power: null, lights: null });
-  const mapReadyRef = useRef(false);
 
-  // ── Phase 4 — Force Add Polygons Properly ─────────────────────────────────
+  // Wait for map instance
+  useEffect(() => {
+    let timer;
+    const check = () => {
+      if (mapRef.current) {
+        setMapReady(true);
+      } else {
+        timer = setTimeout(check, 100);
+      }
+    };
+    check();
+    return () => clearTimeout(timer);
+  }, [mapRef]);
+
+  // ── Zones Layer ──────────────────────────────────────────────────────────
   const buildZoneLayer = useCallback(() => {
     const map = mapRef.current;
-    if (!map) return;
+    if (!map || !layersRef.current) return;
     const zonesLayer = layersRef.current.zones;
 
     const zoneKeys = Object.keys(zones || {});
-    if (zoneKeys.length === 0) return;
+    if (zoneKeys.length === 0) {
+      if (geoJsonRef.current) {
+        zonesLayer.removeLayer(geoJsonRef.current);
+        geoJsonRef.current = null;
+      }
+      return;
+    }
 
     if (geoJsonRef.current) {
-      // Update existing layer style on state change, do not recreate
       geoJsonRef.current.eachLayer(layer => {
         const id = layer.feature?.id || layer.feature?.properties?.id;
         const z = zones?.[id] || {};
@@ -92,7 +109,6 @@ const MapOverlays = ({ activeZone, onZoneClick, onNodeClick }) => {
 
         layer.on("click", (e) => {
           L.DomEvent.stopPropagation(e);
-          console.log("Zone clicked:", id);
           if (onZoneClick) onZoneClick(id, zones?.[id] || {});
           emit('ZONE_SELECTED', { zone: id });
         });
@@ -103,7 +119,7 @@ const MapOverlays = ({ activeZone, onZoneClick, onNodeClick }) => {
         });
 
         layer.on("mouseout", () => {
-          if (activeZone === id) return; // leave active style
+          if (activeZone === id) return;
           layer.setStyle({ weight: 1.2, fillOpacity: 0 });
         });
 
@@ -111,17 +127,18 @@ const MapOverlays = ({ activeZone, onZoneClick, onNodeClick }) => {
       }
     }).addTo(zonesLayer);
 
-    mapRef.current.fitBounds(geoJsonRef.current.getBounds(), { padding: [20, 20] });
-    mapRef.current.invalidateSize();
+    // Initial view set
+    if (map && geoJsonRef.current) {
+      map.fitBounds(geoJsonRef.current.getBounds(), { padding: [20, 20] });
+    }
   }, [mapRef, layersRef, zones, activeZone, onZoneClick, emit]);
 
   // ── Infrastructure Markers ────────────────────────────────────────────────
   const buildInfraMarkers = useCallback(() => {
     const map = mapRef.current;
-    if (!map) return;
+    if (!map || !layersRef.current) return;
     const { traffic: tLayer, water: wLayer, grid: gLayer } = layersRef.current;
 
-    // Traffic junctions
     if (!infraRef.current.traffic) infraRef.current.traffic = L.layerGroup().addTo(tLayer);
     infraRef.current.traffic.clearLayers();
     traffic.junctions.forEach(j => {
@@ -134,7 +151,6 @@ const MapOverlays = ({ activeZone, onZoneClick, onNodeClick }) => {
       });
     });
 
-    // Water reservoirs
     if (!infraRef.current.water) infraRef.current.water = L.layerGroup().addTo(wLayer);
     infraRef.current.water.clearLayers();
     water.reservoirs.forEach(r => {
@@ -146,7 +162,6 @@ const MapOverlays = ({ activeZone, onZoneClick, onNodeClick }) => {
       });
     });
 
-    // Grid substations
     if (!infraRef.current.power) infraRef.current.power = L.layerGroup().addTo(gLayer);
     infraRef.current.power.clearLayers();
     grid.substations.forEach(s => {
@@ -160,7 +175,7 @@ const MapOverlays = ({ activeZone, onZoneClick, onNodeClick }) => {
   }, [mapRef, layersRef, traffic, water, grid, onNodeClick]);
 
   const buildLightMarkers = useCallback(() => {
-    if (!mapRef.current || !lights?.clusters) return;
+    if (!mapRef.current || !layersRef.current || !lights?.clusters) return;
     if (!infraRef.current.lights) infraRef.current.lights = L.layerGroup().addTo(layersRef.current.incidents);
     infraRef.current.lights.clearLayers();
     lights.clusters.forEach(c => {
@@ -172,30 +187,14 @@ const MapOverlays = ({ activeZone, onZoneClick, onNodeClick }) => {
     });
   }, [mapRef, layersRef, lights, onNodeClick]);
 
-  // Lifecycle
+  // Sync state to map
   useEffect(() => {
-    const checkReady = setInterval(() => {
-      if (mapRef.current) {
-        clearInterval(checkReady);
-        mapReadyRef.current = true;
-        buildZoneLayer();
-        buildInfraMarkers();
-        buildLightMarkers();
-      }
-    }, 100);
-    return () => clearInterval(checkReady);
-  }, [buildZoneLayer, buildInfraMarkers, buildLightMarkers, mapRef]);
-
-  useEffect(() => {
-    if (mapReadyRef.current) buildZoneLayer();
-  }, [zones, buildZoneLayer]);
-
-  useEffect(() => {
-    if (mapReadyRef.current) {
+    if (mapReady) {
+      buildZoneLayer();
       buildInfraMarkers();
       buildLightMarkers();
     }
-  }, [traffic, water, grid, lights, buildInfraMarkers, buildLightMarkers]);
+  }, [mapReady, zones, traffic, water, grid, lights, buildZoneLayer, buildInfraMarkers, buildLightMarkers]);
 
   return null;
 };
