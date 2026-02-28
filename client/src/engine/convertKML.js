@@ -13,8 +13,8 @@ export function convertKMLString(kmlText) {
 
     geojson.features = geojson.features.filter(f => {
         if (!f || !f.geometry || !f.geometry.type || !f.geometry.coordinates) return false;
-        if (f.geometry.type !== "Polygon" && f.geometry.type !== "MultiPolygon") return false;
-        return true;
+        const t = f.geometry.type;
+        return t === "Polygon" || t === "MultiPolygon" || t === "LineString" || t === "MultiLineString";
     });
 
     return geojson;

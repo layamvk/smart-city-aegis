@@ -27,6 +27,7 @@ const MapOverlays = ({ activeZone, onZoneClick, onNodeClick }) => {
   const [mapReady, setMapReady] = useState(false);
   const geoJsonRef = useRef(null);
   const infraRef = useRef({ traffic: null, water: null, power: null, lights: null });
+  const featureCountRef = useRef(0);
 
   // Wait for map instance
   useEffect(() => {
@@ -49,17 +50,25 @@ const MapOverlays = ({ activeZone, onZoneClick, onNodeClick }) => {
     const zonesLayer = layersRef.current.zones;
 
     const zoneKeys = Object.keys(zones || {});
+
+    // Check if we need a full rebuild (e.g. data swapped from RAW to KML)
+    if (geoJsonRef.current && zoneKeys.length !== featureCountRef.current) {
+      zonesLayer.removeLayer(geoJsonRef.current);
+      geoJsonRef.current = null;
+    }
+
     if (zoneKeys.length === 0) {
       if (geoJsonRef.current) {
         zonesLayer.removeLayer(geoJsonRef.current);
         geoJsonRef.current = null;
       }
+      featureCountRef.current = 0;
       return;
     }
 
     if (geoJsonRef.current) {
       geoJsonRef.current.eachLayer(layer => {
-        const id = layer.feature?.id || layer.feature?.properties?.id;
+        const id = layer.feature?.id || layer.feature?.properties?.id || layer.feature?.properties?.name;
         const z = zones?.[id] || {};
         const isActive = id === activeZone;
         const risk = z.riskScore || 0;
@@ -68,20 +77,22 @@ const MapOverlays = ({ activeZone, onZoneClick, onNodeClick }) => {
         if (risk >= 70) riskColor = '#FF3D3D';
         else if (risk >= 30) riskColor = '#FFA500';
 
+        const isLine = layer.feature?.geometry?.type?.includes('Line');
+
         if (isActive) {
           layer.setStyle({
             color: '#FFFFFF',
-            weight: 2.5,
+            weight: 3,
             fillColor: riskColor,
-            fillOpacity: 0.25,
+            fillOpacity: isLine ? 0 : 0.35,
             opacity: 1
           });
         } else {
           layer.setStyle({
             color: '#4FD1FF',
-            weight: 1.2,
+            weight: isLine ? 2 : 1.5,
             fillColor: '#4FD1FF',
-            fillOpacity: 0,
+            fillOpacity: isLine ? 0 : 0.05,
             opacity: 0.8
           });
         }
@@ -95,17 +106,21 @@ const MapOverlays = ({ activeZone, onZoneClick, onNodeClick }) => {
     };
 
     if (geojsonData.features.length === 0) return;
+    featureCountRef.current = geojsonData.features.length;
 
     geoJsonRef.current = L.geoJSON(geojsonData, {
-      style: {
-        color: "#4FD1FF",
-        weight: 1.2,
-        fillColor: '#4FD1FF',
-        fillOpacity: 0,
-        opacity: 0.8
+      style: (feature) => {
+        const isLine = feature.geometry.type.includes('Line');
+        return {
+          color: "#4FD1FF",
+          weight: isLine ? 2 : 1.5,
+          fillColor: '#4FD1FF',
+          fillOpacity: isLine ? 0 : 0.05,
+          opacity: 0.8
+        };
       },
       onEachFeature: (feature, layer) => {
-        const id = feature.id || feature.properties?.id;
+        const id = feature.id || feature.properties?.id || feature.properties?.name;
 
         layer.on("click", (e) => {
           L.DomEvent.stopPropagation(e);
@@ -115,21 +130,29 @@ const MapOverlays = ({ activeZone, onZoneClick, onNodeClick }) => {
 
         layer.on("mouseover", () => {
           if (activeZone === id) return;
-          layer.setStyle({ weight: 2.5 });
+          layer.setStyle({ weight: 3, opacity: 1 });
         });
 
         layer.on("mouseout", () => {
           if (activeZone === id) return;
-          layer.setStyle({ weight: 1.2, fillOpacity: 0 });
+          const isLine = feature.geometry.type.includes('Line');
+          layer.setStyle({ weight: isLine ? 2 : 1.5, opacity: 0.8 });
         });
 
         layer.bindTooltip(`<strong>${id}</strong>`, { sticky: true, className: 'map-tooltip' });
       }
     }).addTo(zonesLayer);
 
-    // Initial view set
-    if (map && geoJsonRef.current) {
-      map.fitBounds(geoJsonRef.current.getBounds(), { padding: [20, 20] });
+    // Zoom to boundaries
+    if (map && geoJsonRef.current && geojsonData.features.length > 0) {
+      try {
+        const bounds = geoJsonRef.current.getBounds();
+        if (bounds.isValid()) {
+          map.fitBounds(bounds, { padding: [40, 40] });
+        }
+      } catch (e) {
+        console.error("Fit bounds error", e);
+      }
     }
   }, [mapRef, layersRef, zones, activeZone, onZoneClick, emit]);
 
