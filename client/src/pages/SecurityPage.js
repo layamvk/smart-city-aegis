@@ -33,7 +33,7 @@ const THREAT_COLORS = {
 };
 
 const SecurityPage = () => {
-    const { security, emit } = useCityEngine();
+    const { emit } = useCityEngine();
     const [selectedCam, setSelectedCam] = useState(null);
 
     const categories = {

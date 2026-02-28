@@ -3,7 +3,8 @@ import { useCityEngine } from '../engine/CityEngine';
 import './ManagementPages.css';
 
 const GovernancePage = () => {
-    const { governance } = useCityEngine();
+    // Governance data fetched from engine but not currently displayed as list
+    useCityEngine();
 
     return (
         <div className="management-page">

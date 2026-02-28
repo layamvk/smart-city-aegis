@@ -73,7 +73,7 @@ const ReservoirCard = ({ res, onFlowChange, flowSpeed }) => {
 };
 
 const WaterPage = () => {
-    const { water, updateWater, triggerScenario } = useCityEngine();
+    const { triggerScenario } = useCityEngine();
     const [flowSpeeds, setFlowSpeeds] = useState(() => {
         const init = {};
         Object.values(WATER_ZONES).flat().forEach(r => { init[r.id] = 65; });

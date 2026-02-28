@@ -20,7 +20,7 @@ const MetricCell = ({ label, value, unit = '%', color = '#00F0FF', trend = 0 }) 
 );
 
 const MetricsBar = () => {
-    const { summary, globalThreatScore, traffic, water, grid } = useCityEngine();
+    const { summary, globalThreatScore, traffic, water } = useCityEngine();
 
     const criticalJunctions = useMemo(
         () => traffic.junctions.filter(j => j.congestion > 80).length,

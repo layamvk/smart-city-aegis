@@ -3,7 +3,7 @@ import { useCityEngine } from '../engine/CityEngine';
 import './NodeDrawer.css';
 
 const NodeDrawer = ({ node, onClose }) => {
-    const { updateTraffic, updateLights, setGrid } = useCityEngine();
+    const { updateTraffic, updateLights } = useCityEngine();
 
     if (!node) return null;
 
