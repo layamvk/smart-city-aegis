@@ -78,50 +78,58 @@ export const CityEngineProvider = ({ children }) => {
 
     useEffect(() => {
         const kmlPath = '/0f0ccbda-9485-4964-b3b1-6ce53af82bbb.kml';
-        console.log(`[CORE] Attempting to load real boundaries from: ${kmlPath}`);
+        console.log(`[CORE] Loading KML from: ${kmlPath}`);
 
         fetch(kmlPath)
             .then(res => {
-                if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 return res.text();
             })
             .then(text => {
-                console.log(`[CORE] KML data received (${text.length} bytes), parsing...`);
+                console.log(`[CORE] KML received (${text.length} bytes)`);
                 const geojson = convertKMLString(text);
-                if (geojson && geojson.features.length) {
-                    console.log(`[CORE] Successfully parsed ${geojson.features.length} ward features`);
-                    const initZones = {};
-                    geojson.features.forEach((f, i) => {
-                        const id = f.properties.name || f.properties.ZONE_NAME || `Ward-${i}`;
-                        initZones[id] = {
-                            ...f.properties,
-                            name: id,
-                            id: id,
-                            type: 'Ward',
-                            riskScore: 10 + Math.random() * 70,
-                            trafficDensity: 30 + Math.random() * 60,
-                            trafficLoad: 30 + Math.random() * 60,
-                            gridLoad: 35 + Math.random() * 57,
-                            reservoirLevel: 40 + Math.random() * 55,
-                            waterLevel: 40 + Math.random() * 55,
-                            lightingLevel: 20 + Math.random() * 80,
-                            emergencyActive: false,
-                            status: 'NORMAL',
-                            lastUpdated: Date.now(),
-                            feature: f,
-                            riskHistory: Array.from({ length: 12 }, () => 15 + Math.random() * 15),
-                        };
-                        f.id = id;
-                        f.properties.id = id;
-                    });
-                    setZones(initZones);
-                } else {
-                    console.error('[CORE] KML parsed but yielded no features.');
+                if (!geojson || !geojson.features.length) {
+                    console.error('[CORE] KML yielded no renderable features!');
+                    return;
                 }
+
+                console.log(`[CORE] Flat features: ${geojson.features.length}`);
+
+                // Group flattened features by zone name so each GCC zone = one entry
+                const grouped = {};
+                geojson.features.forEach((f, i) => {
+                    const zoneName = f.properties?.name || f.properties?.ZONE_NAME || `Ward-${i}`;
+                    if (!grouped[zoneName]) grouped[zoneName] = { features: [], props: f.properties };
+                    f.properties = { ...f.properties, name: zoneName, id: zoneName };
+                    f.id = zoneName;
+                    grouped[zoneName].features.push(f);
+                });
+
+                const initZones = {};
+                Object.entries(grouped).forEach(([zoneName, { features: zFeatures, props }]) => {
+                    initZones[zoneName] = {
+                        ...props,
+                        name: zoneName,
+                        id: zoneName,
+                        type: 'Ward',
+                        riskScore: 10 + Math.random() * 70,
+                        trafficLoad: 30 + Math.random() * 60,
+                        gridLoad: 35 + Math.random() * 57,
+                        waterLevel: 40 + Math.random() * 55,
+                        lightingLevel: 20 + Math.random() * 80,
+                        emergencyActive: false,
+                        status: 'NORMAL',
+                        lastUpdated: Date.now(),
+                        features: zFeatures,
+                        feature: zFeatures[0],
+                        riskHistory: Array.from({ length: 12 }, () => 15 + Math.random() * 15),
+                    };
+                });
+
+                console.log(`[CORE] Zones ready: ${Object.keys(initZones).length} GCC wards`);
+                setZones(initZones);
             })
-            .catch(err => {
-                console.error('[CORE] Critical error loading KML:', err);
-            });
+            .catch(err => console.error('[CORE] Fatal KML error:', err));
     }, []);
 
     // --- ACTIONS ---
