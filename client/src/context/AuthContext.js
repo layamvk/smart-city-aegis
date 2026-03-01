@@ -48,20 +48,6 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = useCallback(async (username, password) => {
-    // START JUDGE MOCK FOR VERCEL
-    if (password === 'Password123') {
-      let role = 'Admin';
-      if (username === 'superadmin') role = 'SuperAdmin';
-
-      const newToken = 'mock-jwt-token-for-vercel';
-      setAuthToken(newToken);
-      setTokenState(newToken);
-      setDeviceTrustScore(100);
-      setUser({ username, role, zone: 'Global' });
-      return true;
-    }
-    // END JUDGE MOCK FOR VERCEL
-
     try {
       const response = await api.post('/auth/login', { username, password });
       const { token: newToken, role, zone, deviceTrustScore: dts } = response.data;

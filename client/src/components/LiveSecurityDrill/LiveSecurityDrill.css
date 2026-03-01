@@ -1,0 +1,346 @@
+/* ── Backdrop ───────────────────────────────────────────────────── */
+.drill-panel-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Inter', sans-serif;
+}
+
+/* ── Panel (Glassmorphism) ──────────────────────────────────────── */
+.drill-panel {
+    width: 1100px;
+    max-width: 96vw;
+
+    /* Dark glass panel over blobs */
+    background: linear-gradient(145deg, rgba(12, 13, 20, 0.72) 0%, rgba(8, 9, 14, 0.80) 100%);
+    backdrop-filter: blur(48px) saturate(160%) brightness(0.95);
+    -webkit-backdrop-filter: blur(48px) saturate(160%) brightness(0.95);
+
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 18px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.08),
+        0 16px 60px rgba(0, 0, 0, 0.8);
+}
+
+/* ── Header ─────────────────────────────────────────────────────── */
+.drill-header {
+    padding: 18px 24px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.drill-title {
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.drill-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
+}
+
+.drill-dot.active {
+    background: #EF4444;
+    box-shadow: 0 0 10px #EF4444;
+    animation: pulseDot 0.8s ease-in-out infinite alternate;
+}
+
+.drill-close {
+    color: #9CA3AF;
+    cursor: pointer;
+    font-size: 22px;
+    line-height: 1;
+    transition: color 0.2s;
+}
+
+.drill-close:hover {
+    color: #fff;
+}
+
+/* ── Warning Banner ─────────────────────────────────────────────── */
+.drill-warning-banner {
+    background: rgba(255, 255, 255, 0.04);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    padding: 9px 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    color: #D1D5DB;
+    letter-spacing: 0.2px;
+}
+
+.drill-warning-banner .warn-icon {
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+/* ── Body ───────────────────────────────────────────────────────── */
+.drill-body {
+    display: flex;
+    height: 600px;
+}
+
+/* ── Sidebar ────────────────────────────────────────────────────── */
+.drill-sidebar {
+    width: 270px;
+    flex-shrink: 0;
+    border-right: 1px solid rgba(255, 255, 255, 0.07);
+    padding: 14px 10px;
+    overflow-y: auto;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.drill-sidebar-title {
+    font-size: 10px;
+    color: #6B7280;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 12px;
+    padding: 0 8px;
+}
+
+.drill-btn {
+    width: 100%;
+    padding: 10px 12px;
+    background: transparent;
+    border: 1px solid transparent;
+    color: #D1D5DB;
+    text-align: left;
+    font-size: 13px;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    border-radius: 6px;
+    margin-bottom: 3px;
+    transition: all 0.18s ease;
+}
+
+.drill-btn:hover {
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.15);
+    color: #fff;
+}
+
+.drill-btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
+/* ── Content Area ───────────────────────────────────────────────── */
+.drill-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+/* ── Resilience Meter ───────────────────────────────────────────── */
+.drill-meter-row {
+    padding: 12px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.01);
+}
+
+.resilience-label {
+    color: #6B7280;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.resilience-bar-bg {
+    flex: 1;
+    max-width: 400px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-left: 16px;
+}
+
+.resilience-bar-fill {
+    height: 100%;
+    transition: transform 0.4s ease, background 0.4s ease;
+    transform-origin: left;
+    border-radius: 3px;
+}
+
+/* ── Log Terminal ───────────────────────────────────────────────── */
+.drill-logs {
+    flex: 1;
+    padding: 12px 18px;
+    overflow-y: auto;
+    font-family: 'Courier New', monospace;
+    font-size: 12.5px;
+    background: rgba(0, 0, 0, 0.35);
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.drill-log {
+    animation: fadeSlideIn 180ms ease-out both;
+    line-height: 1.6;
+}
+
+/* Simple internal text logs */
+.log-time {
+    color: #4B5563;
+    margin-right: 8px;
+    font-size: 11px;
+}
+
+.log-sev-INFO {
+    color: #9CA3AF;
+}
+
+.log-sev-WARNING {
+    color: #F59E0B;
+}
+
+.log-sev-CRITICAL {
+    color: #EF4444;
+}
+
+.log-safeguarded {
+    color: #10B981;
+    font-weight: bold;
+    margin-top: 6px;
+    display: block;
+}
+
+.log-details {
+    color: #D1D5DB;
+    margin-top: 2px;
+    display: block;
+}
+
+/* ── Trigger Container ────────────────────────────────────────────── */
+.drill-trigger-container {
+    position: fixed;
+    top: 50%;
+    right: 32px;
+    transform: translateY(-50%);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+}
+
+/* ── Trigger Button ─────────────────────────────────────────────── */
+.drill-btn-trigger {
+    /* Red-tinted glass to stand out for judges */
+    background: linear-gradient(135deg, rgba(220, 38, 38, 0.25) 0%, rgba(153, 27, 27, 0.35) 100%);
+    backdrop-filter: blur(48px) saturate(180%);
+    -webkit-backdrop-filter: blur(48px) saturate(180%);
+    border: 1px solid rgba(239, 68, 68, 0.5);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+        0 12px 32px rgba(220, 38, 38, 0.45);
+
+    color: #FEE2E2;
+    padding: 10px 20px;
+    border-radius: 6px;
+    /* minimal round corner */
+    font-size: 13px;
+    /* made bigger and more visible */
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.drill-btn-trigger:hover {
+    background: linear-gradient(135deg, rgba(220, 38, 38, 0.4) 0%, rgba(153, 27, 27, 0.55) 100%);
+    border-color: rgba(239, 68, 68, 0.8);
+    color: #fff;
+    transform: translateY(-2px) scale(1.02);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.3),
+        0 16px 40px rgba(220, 38, 38, 0.6);
+}
+
+/* ── Trigger Note ────────────────────────────────────────────────── */
+.drill-trigger-note {
+    background: linear-gradient(145deg, rgba(14, 15, 22, 0.82) 0%, rgba(10, 11, 17, 0.90) 100%);
+    backdrop-filter: blur(48px) saturate(180%);
+    -webkit-backdrop-filter: blur(48px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.05),
+        0 8px 32px rgba(0, 0, 0, 0.6);
+    padding: 14px 18px;
+    border-radius: 6px;
+    /* minimal round corner */
+    color: #D1D5DB;
+    font-size: 11px;
+    line-height: 1.6;
+    max-width: 280px;
+    text-align: right;
+    letter-spacing: 0.2px;
+}
+
+.drill-trigger-note strong {
+    color: #fff;
+    font-size: 13px;
+    display: block;
+    margin-bottom: 6px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+/* ── Animations ─────────────────────────────────────────────────── */
+@keyframes fadeSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulseDot {
+    from {
+        opacity: 0.5;
+        box-shadow: 0 0 4px #EF4444;
+    }
+
+    to {
+        opacity: 1;
+        box-shadow: 0 0 14px #EF4444;
+    }
+}

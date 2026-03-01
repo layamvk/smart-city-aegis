@@ -262,6 +262,18 @@
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
+@keyframes fade-in-up {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 .cctv-panel-new:hover {
     transform: translateY(-4px);
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.8), 0 0 0 1px var(--threat-color);

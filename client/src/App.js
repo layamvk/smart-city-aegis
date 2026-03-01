@@ -11,6 +11,7 @@ import SideNav from './components/SideNav';
 import ZoneDrawer from './components/ZoneDrawer';
 import NodeDrawer from './components/NodeDrawer';
 import MetricsBar from './components/MetricsBar';
+import LiveSecurityDrill from './components/LiveSecurityDrill/LiveSecurityDrill';
 import CommandPalette from './components/CommandPalette';
 
 // Pages
@@ -51,6 +52,15 @@ const AppContent = () => {
 
   return (
     <div className="app-root">
+
+      {/* ── Fluid Blob Background ───────────────────────────── */}
+      <div className="blob-stage" aria-hidden="true">
+        <div className="blob blob-1" />
+        <div className="blob blob-2" />
+        <div className="blob blob-3" />
+        <div className="blob blob-4" />
+      </div>
+
       {/* Persistent map background — never unmounts */}
       <MapRoot
         enabled={isOverview}
@@ -99,6 +109,7 @@ const AppContent = () => {
 
       {/* Command Palette (Ctrl+K) */}
       <CommandPalette />
+      {isOverview && <LiveSecurityDrill />}
 
       {/* Sticky metrics bar */}
       <div className="dashboard-panel" style={{ zIndex: 100, position: 'relative' }}>

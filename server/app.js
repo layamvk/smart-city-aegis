@@ -27,6 +27,10 @@ const monitoringRoutes = require('./routes/monitoring');
 const testingRoutes = require('./routes/testing');
 const emergencyRoutes = require('./routes/emergency');
 const lightRoutes = require('./routes/lights');
+const securitySimRoutes = require('./routes/securitySim');
+const simulationEngine = require('./services/SecuritySimulationEngine');
+const http = require('http');
+const { Server } = require('socket.io');
 
 const app = express();
 
@@ -124,6 +128,7 @@ app.use('/monitoring', monitoringRoutes);
 app.use('/testing', testingRoutes);
 app.use('/emergency', emergencyRoutes);
 app.use('/lights', lightRoutes);
+app.use('/security', securitySimRoutes);
 
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'OK', timestamp: new Date() });
@@ -145,7 +150,18 @@ const startServer = async () => {
   try {
     await connectDB();
     await seedDefaultUsers();
-    app.listen(PORT, () => console.log(`[CORE] Production security active on port ${PORT}`));
+
+    const server = http.createServer(app);
+    const io = new Server(server, {
+      cors: {
+        origin: allowedOrigins,
+        methods: ["GET", "POST"]
+      }
+    });
+
+    app.set('io', io);
+
+    server.listen(PORT, () => console.log(`[CORE] Production security active on port ${PORT}`));
   } catch (error) {
     console.error('Core failure:', error);
     process.exit(1);

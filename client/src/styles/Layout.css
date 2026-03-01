@@ -11,10 +11,11 @@
     position: fixed;
     inset: 0;
     z-index: 1000;
-    background: radial-gradient(circle at center, #1a222d 0%, #0b0f14 100%);
+    background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.04) 0%, #06080d 70%);
     display: flex;
     align-items: center;
     justify-content: center;
+    backdrop-filter: blur(4px);
 }
 
 .ui-overlay {
@@ -54,10 +55,10 @@
 }
 
 ::-webkit-scrollbar-thumb {
-    background: rgba(0, 240, 255, 0.2);
-    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 240, 255, 0.4);
+    background: rgba(255, 255, 255, 0.28);
 }

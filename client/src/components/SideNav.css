@@ -1,13 +1,22 @@
 .side-nav {
-    width: 240px;
-    height: calc(100vh - 124px);
-    margin: 32px 0 32px 32px;
-    border-radius: 20px;
+    width: 195px;
+    height: calc(100vh - 104px);
+    margin: 14px 0 14px 20px;
+    border-radius: 18px;
     display: flex;
     flex-direction: column;
-    padding: 24px 16px;
+    padding: 18px 10px;
     z-index: 100;
-    transition: transform var(--transition-normal) var(--ease-smooth);
+
+    /* Dark glass sidebar over blobs */
+    background: linear-gradient(160deg, rgba(14, 15, 22, 0.82) 0%, rgba(10, 11, 17, 0.90) 100%);
+    backdrop-filter: blur(48px) saturate(180%);
+    -webkit-backdrop-filter: blur(48px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.06),
+        inset 1px 0 0 rgba(255, 255, 255, 0.04),
+        0 8px 32px rgba(0, 0, 0, 0.6);
 }
 
 .nav-group {
@@ -20,19 +29,19 @@
 .nav-link {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 12px 20px;
+    gap: 10px;
+    padding: 10px 14px;
     text-decoration: none;
     color: var(--text-dim);
-    font-size: 13px;
-    font-weight: 500;
+    font-size: 12px;
+    font-weight: 400;
     letter-spacing: 0.02em;
-    border-radius: 12px;
+    border-radius: 10px;
     transition: all var(--transition-normal) var(--ease-smooth);
     background: transparent;
     position: relative;
     overflow: hidden;
-    opacity: 0.7;
+    opacity: 0.65;
 }
 
 .nav-link::before {

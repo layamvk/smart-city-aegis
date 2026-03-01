@@ -5,11 +5,15 @@
     /* Hide completely */
     width: 360px;
     height: calc(100vh - 128px);
-    background: linear-gradient(135deg, rgba(10, 10, 15, 0.6) 0%, rgba(10, 10, 15, 0.4) 100%);
-    backdrop-filter: blur(40px) saturate(180%);
-    -webkit-backdrop-filter: blur(40px) saturate(180%);
-    border: 1px solid var(--border-t-l);
-    box-shadow: 0 50px 100px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+
+    /* Dark side drawer over blobs */
+    background: linear-gradient(145deg, rgba(14, 15, 22, 0.82) 0%, rgba(10, 11, 17, 0.90) 100%);
+    backdrop-filter: blur(48px) saturate(180%);
+    -webkit-backdrop-filter: blur(48px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.06),
+        0 16px 60px rgba(0, 0, 0, 0.8);
     border-radius: 24px;
     z-index: 200;
     display: flex;
@@ -42,7 +46,7 @@
 
 .drawer-zone-type {
     font-size: 9px;
-    color: #00F0FF;
+    color: var(--text-dim);
     font-weight: 700;
     letter-spacing: 0.2em;
     margin-top: 4px;
