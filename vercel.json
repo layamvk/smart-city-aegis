@@ -1,8 +1,5 @@
 {
     "version": 2,
-    "buildCommand": "cd client && npm run build",
-    "outputDirectory": "client/build",
-    "installCommand": "cd client && npm install",
     "headers": [
         {
             "source": "/chennai-boundary.geojson",
@@ -30,7 +27,7 @@
                 },
                 {
                     "key": "Cache-Control",
-                    "value": "public, max-age=86400, s-maxage=86400"
+                    "value": "public, max-age=86400"
                 }
             ]
         }
