@@ -37,7 +37,7 @@ const SideNav = () => {
 
             <div className="nav-footer">
                 <div className="status-dot"></div>
-                <span style={{ fontSize: 9, color: '#4B6080' }}>SYSTEM STATUS: NOMINAL</span>
+                <span style={{ fontSize: 9, color: 'var(--text-muted)', fontWeight: 600, letterSpacing: '0.05em' }}>SYSTEM STATUS: NOMINAL</span>
             </div>
         </aside>
     );

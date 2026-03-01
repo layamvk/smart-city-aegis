@@ -1,47 +1,48 @@
+/* Management Page - Minimal SaaS Theme */
 .management-page {
     position: relative;
     z-index: 10;
-    padding: 24px;
+    padding: 32px;
     height: 100%;
     overflow-y: auto;
-    color: #E6F1FF;
+    color: var(--text);
     pointer-events: auto;
-    filter: none;
-    opacity: 1;
 }
 
 .mgmt-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 24px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
 }
 
 .mgmt-header h2 {
     font-size: 24px;
-    letter-spacing: 0.25em;
-    font-weight: 900;
-    color: #fff;
-    text-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+    letter-spacing: 0.15em;
+    font-weight: 700;
+    color: var(--text-bright);
     margin: 0;
+    text-transform: uppercase;
+    text-shadow: none;
 }
 
 .system-pill {
-    font-size: 9px;
-    background: rgba(0, 240, 255, 0.1);
-    color: #00F0FF;
-    padding: 2px 8px;
-    border-radius: 4px;
-    border: 1px solid rgba(0, 240, 255, 0.2);
-    font-weight: 700;
+    font-size: 10px;
+    background: var(--accent-muted);
+    color: var(--accent);
+    padding: 4px 10px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--accent);
+    font-weight: 600;
+    text-transform: uppercase;
 }
 
 .system-pill.danger {
-    background: rgba(255, 61, 61, 0.1);
-    color: #FF3D3D;
-    border-color: rgba(255, 61, 61, 0.2);
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--critical);
+    border-color: var(--critical);
 }
 
 .mgmt-actions {
@@ -56,12 +57,12 @@
 }
 
 .mgmt-section h3 {
-    font-size: 13px;
-    color: rgba(255, 255, 255, 0.4);
-    letter-spacing: 0.2em;
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
     margin-bottom: 20px;
     text-transform: uppercase;
-    font-weight: 700;
+    font-weight: 600;
 }
 
 /* Sector Accordion Styles */
@@ -73,18 +74,16 @@
 }
 
 .sector-accordion {
-    background: rgba(15, 20, 30, 0.6);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 12px;
+    background: var(--panel);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
     overflow: hidden;
-    transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: all var(--duration) var(--ease);
 }
 
 .sector-accordion:hover {
-    border-color: rgba(255, 255, 255, 0.15);
-    background: rgba(20, 25, 35, 0.75);
+    border-color: var(--text-muted);
 }
 
 .sector-header {
@@ -93,7 +92,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: transparent;
 }
 
 .sector-title-row {
@@ -105,45 +103,32 @@
 
 .sector-name {
     font-size: 18px;
-    font-weight: 800;
-    color: #fff;
-    letter-spacing: 0.1em;
+    font-weight: 600;
+    color: var(--text-bright);
+    letter-spacing: 0.02em;
 }
 
 .sector-stats-summary {
     display: flex;
     gap: 16px;
-    font-size: 10px;
-    color: rgba(255, 255, 255, 0.5);
-    font-weight: 600;
-    letter-spacing: 0.05em;
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 500;
 }
 
 .sector-status-badge {
-    padding: 4px 12px;
-    border-radius: 6px;
+    padding: 6px 14px;
+    border-radius: var(--radius-sm);
     font-size: 10px;
-    font-weight: 800;
-    letter-spacing: 0.1em;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
 }
 
 /* Area Card Styles */
 .sector-content {
     padding: 0 24px 24px 24px;
-    background: rgba(0, 0, 0, 0.2);
-    animation: slideDown 0.4s ease-out;
-}
-
-@keyframes slideDown {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    background: transparent;
 }
 
 .areas-grid {
@@ -154,85 +139,82 @@
 }
 
 .area-control-card {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 10px;
-    padding: 16px;
-    transition: all 0.3s ease;
+    background: var(--panel-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 20px;
+    transition: all var(--duration) var(--ease);
 }
 
 .area-control-card:hover {
-    background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(255, 255, 255, 0.1);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    background: rgba(255, 255, 255, 0.02);
+    border-color: var(--text-muted);
 }
 
 .area-card-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
 }
 
 .area-name {
-    font-size: 13px;
-    font-weight: 700;
-    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-bright);
 }
 
 .area-sub {
     display: block;
-    font-size: 9px;
-    color: rgba(255, 255, 255, 0.4);
+    font-size: 10px;
+    color: var(--text-muted);
     margin-top: 4px;
-    font-weight: 600;
-    letter-spacing: 0.02em;
+    font-weight: 500;
 }
 
 .area-risk-badge {
-    font-size: 9px;
-    font-weight: 800;
+    font-size: 10px;
+    font-weight: 600;
     letter-spacing: 0.05em;
+    text-transform: uppercase;
 }
 
 .area-metrics-grid {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 16px;
 }
 
 .metric-top {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
 }
 
 .metric-top label {
-    font-size: 9px;
-    color: rgba(255, 255, 255, 0.4);
-    font-weight: 700;
-    letter-spacing: 0.1em;
+    font-size: 10px;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
 }
 
 .metric-top span {
-    font-size: 11px;
-    font-weight: 800;
-    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-bright);
 }
 
 .area-bar-bg {
     height: 4px;
     background: rgba(255, 255, 255, 0.05);
-    border-radius: 2px;
+    border-radius: var(--radius-sm);
     overflow: hidden;
 }
 
 .area-bar-fg {
     height: 100%;
-    border-radius: 2px;
-    transition: width 1s ease-in-out;
+    transition: width 1s var(--ease);
 }
 
 .area-stats-row {
@@ -240,64 +222,28 @@
     grid-template-columns: 1fr 1fr 40px;
     align-items: center;
     gap: 12px;
-    padding-top: 8px;
-    border-top: 1px solid rgba(255, 255, 255, 0.03);
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    margin-top: 16px;
 }
 
 .area-stat {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 4px;
 }
 
 .area-stat label {
-    font-size: 7px;
-    color: rgba(255, 255, 255, 0.3);
-    font-weight: 700;
-    letter-spacing: 0.05em;
+    font-size: 8px;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
 }
 
 .area-stat span {
-    font-size: 12px;
-    font-weight: 800;
-    color: #fff;
-}
-
-.area-stat small {
-    font-size: 8px;
-    opacity: 0.5;
-}
-
-.mini-trend svg {
-    filter: drop-shadow(0 0 4px currentColor);
-}
-
-/* Status dots */
-.status-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-}
-
-.status-dot.pulsing {
-    animation: dotPulse 2s infinite ease-in-out;
-}
-
-@keyframes dotPulse {
-    0% {
-        transform: scale(1);
-        opacity: 1;
-    }
-
-    50% {
-        transform: scale(1.4);
-        opacity: 0.6;
-    }
-
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-bright);
 }
 
 /* Corridor Flow Card V2 */
@@ -308,82 +254,95 @@
 }
 
 .corridor-card-v2 {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 12px;
-    padding: 20px;
-    transition: all 0.3s ease;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    transition: all var(--duration) var(--ease);
+    box-shadow: var(--shadow-subtle);
 }
 
 .corridor-card-v2:hover {
-    background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(0, 240, 255, 0.3);
+    border-color: var(--accent);
 }
 
 .corridor-meta {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 12px;
+    margin-bottom: 16px;
 }
 
 .c-id {
-    font-size: 11px;
-    font-weight: 800;
-    color: #fff;
-    letter-spacing: 0.05em;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-bright);
+    letter-spacing: 0.1em;
     text-transform: uppercase;
 }
 
 .c-speed {
-    font-size: 13px;
-    font-weight: 800;
-    color: #00F0FF;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--accent);
 }
 
 .corridor-bar-bg {
     height: 6px;
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 3px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
     overflow: hidden;
-    margin-bottom: 12px;
+    margin-bottom: 16px;
 }
 
 .corridor-bar-fg {
     height: 100%;
-    border-radius: 3px;
 }
 
 .corridor-labels {
     display: flex;
     justify-content: space-between;
-    font-size: 8px;
-    color: rgba(255, 255, 255, 0.4);
-    font-weight: 700;
-    letter-spacing: 0.1em;
+    font-size: 9px;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
 }
 
 /* Buttons */
 .btn-secondary {
-    background: rgba(0, 240, 255, 0.1);
-    border: 1px solid #00F0FF;
-    color: #00F0FF;
+    background: var(--panel-card);
+    border: 1px solid var(--border);
+    color: var(--text);
     padding: 8px 16px;
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: 0.1em;
+    font-size: 11px;
+    font-weight: 600;
     cursor: pointer;
-    border-radius: 6px;
+    border-radius: var(--radius-sm);
+    transition: all var(--duration) var(--ease);
+    text-transform: uppercase;
+}
+
+.btn-secondary:hover {
+    background: var(--panel-card);
+    border-color: var(--accent);
+    color: var(--accent);
 }
 
 .btn-danger {
-    background: rgba(255, 61, 61, 0.1);
-    border: 1px solid #FF3D3D;
-    color: #FF3D3D;
+    background: var(--panel-card);
+    border: 1px solid var(--border);
+    color: var(--text);
     padding: 8px 16px;
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: 0.1em;
+    font-size: 11px;
+    font-weight: 600;
     cursor: pointer;
-    border-radius: 6px;
+    border-radius: var(--radius-sm);
+    transition: all var(--duration) var(--ease);
+    text-transform: uppercase;
+}
+
+.btn-danger:hover {
+    background: var(--critical);
+    border-color: var(--critical);
+    color: #fff;
 }
