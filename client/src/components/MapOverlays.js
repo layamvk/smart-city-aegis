@@ -55,10 +55,10 @@ const MapOverlays = ({ activeZone, onZoneClick, onNodeClick }) => {
         const isActive = id === activeZone;
         const isPolygon = feature.geometry?.type?.includes('Polygon');
         return {
-          color: isActive ? '#FFFFFF' : '#00E5FF',
-          weight: isActive ? 3.5 : 1.5,
+          color: isActive ? '#FFFFFF' : '#4F46E5',
+          weight: isActive ? 3 : 2,
           opacity: isActive ? 1 : 0.85,
-          fillColor: '#00E5FF',
+          fillColor: '#4F46E5',
           fillOpacity: isPolygon ? (isActive ? 0.3 : 0.05) : 0,
         };
       },
@@ -77,20 +77,23 @@ const MapOverlays = ({ activeZone, onZoneClick, onNodeClick }) => {
         });
         layer.on('mouseout', () => {
           if (id === activeZone) return;
-          layer.setStyle({ weight: 1.5, color: '#00E5FF', opacity: 0.85 });
+          layer.setStyle({ weight: 2, color: '#4F46E5', opacity: 0.85 });
         });
 
         layer.bindTooltip(`<b>${id}</b>`, { sticky: true, className: 'map-tooltip' });
       },
     }).addTo(zonesLayer);
 
-    // Auto-fit on first real load
+    // Auto-fit on first real load with timeout to ensure container is ready
     if (features.length !== prevZoneCountRef.current) {
       prevZoneCountRef.current = features.length;
-      try {
-        const bounds = zoneLayerRef.current.getBounds();
-        if (bounds.isValid()) mapInstance.fitBounds(bounds, { padding: [50, 50] });
-      } catch (_) { }
+      setTimeout(() => {
+        try {
+          if (!mapInstance || !zoneLayerRef.current) return;
+          const bounds = zoneLayerRef.current.getBounds();
+          if (bounds.isValid()) mapInstance.fitBounds(bounds, { padding: [50, 50] });
+        } catch (_) { }
+      }, 400);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mapInstance, zones, activeZone]);
