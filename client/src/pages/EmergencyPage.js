@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useCityEngine } from '../engine/CityEngine';
 import { CHENNAI_ZONES_GEOJSON } from '../engine/CityEngine';
-import { MOCK_INCIDENTS } from '../engine/MockData';
+
 import './ManagementPages.css';
 import './EmergencyPage.css';
 
@@ -32,8 +32,7 @@ const EmergencyPage = () => {
         triggerScenario, emit, updateEmergency
     } = useCityEngine();
 
-    const seedIncidents = (MOCK_INCIDENTS && MOCK_INCIDENTS.length > 0) ? MOCK_INCIDENTS : FALLBACK_INCIDENTS;
-    const [incidents, setIncidents] = useState(seedIncidents);
+    const [incidents, setIncidents] = useState(FALLBACK_INCIDENTS);
 
     const [form, setForm] = useState({
         type: 'FIRE',

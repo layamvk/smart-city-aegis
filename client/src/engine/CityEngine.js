@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState, useCallback, useMemo } from 'react';
+import React, { createContext, useContext, useEffect, useState, useCallback, useMemo, useRef } from 'react';
 import { TRAFFIC_INFRA, WATER_INFRA, GRID_INFRA, LIGHT_INFRA } from './MockData';
 // KML parser no longer used — loading pre-converted GeoJSON directly
 import { tickDynamicEngine } from './DynamicEngine';
