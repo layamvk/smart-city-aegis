@@ -45,7 +45,13 @@ const Login = () => {
       try {
         await login(username, password);
       } catch (err) {
-        setError(err.response?.data?.message || 'Login failed');
+        if (!err.response) {
+          setError('Network error: Cannot reach the security server. If you are on Vercel, check if the REACT_APP_API_URL environment variable is set to your backend URL.');
+        } else if (err.response.status === 429) {
+          setError('Too many attempts: Access restricted to prevent brute force. Please wait 15 minutes.');
+        } else {
+          setError(err.response.data?.message || 'Authentication error: Please check your credentials.');
+        }
         setPassword('');
       }
     }

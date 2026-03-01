@@ -29,23 +29,18 @@ async function seedDefaultUsers() {
                 failedLoginAttempts: 0,
                 accountLocked: false
             });
-            console.log(`Created user: ${userData.username}`);
+            console.log(`Created default user: ${userData.username}`);
         } else {
-            await User.updateOne(
-                { _id: existingUser._id },
-                {
-                    $set: {
-                        password: await bcrypt.hash("Password123", 10),
-                        role: userData.role,
-                        phoneNumber: existingUser.phoneNumber || "9999999999",
-                        phoneVerified: true,
-                        deviceTrustScore: 100,
-                        failedLoginAttempts: 0,
-                        accountLocked: false
-                    }
-                }
-            );
-            console.log(`Refreshed default credentials for: ${userData.username}`);
+            // Only update role if it has changed, do NOT touch password or other fields
+            if (existingUser.role !== userData.role) {
+                await User.updateOne(
+                    { _id: existingUser._id },
+                    { $set: { role: userData.role } }
+                );
+                console.log(`Updated role for existing user: ${userData.username}`);
+            } else {
+                console.log(`User ${userData.username} already exists and is configured correctly.`);
+            }
         }
     }
 

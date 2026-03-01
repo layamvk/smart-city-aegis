@@ -96,9 +96,9 @@ const limiter = rateLimit({
 
 // Stricter limiter for Auth
 const authLimiter = rateLimit({
-  windowMs: 60 * 60 * 1000,
-  max: 10,
-  message: 'Too many login attempts, please try again later'
+  windowMs: 15 * 60 * 1000,
+  max: 100, // Increased to 100 for production/demo stability
+  message: 'Security lockout: Too many attempts from this IP. Please try again after 15 minutes.'
 });
 
 const refreshLimiter = rateLimit({
