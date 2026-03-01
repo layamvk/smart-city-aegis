@@ -1,102 +1,144 @@
-/* Command Center Enhanced Styling - Minimal SaaS Theme */
+/* Command Center Enhanced Styling */
 
 .command-center-enhanced {
-  background-color: var(--bg);
+  background-color: #0f0f0f;
   min-height: 100vh;
   padding-top: 80px;
-  color: var(--text);
-  transition: all var(--duration) var(--ease);
+  color: #E5E7EB;
+  transition: all 0.3s ease;
 }
 
 .command-center-enhanced.threat-elevated {
-  border-left: 3px solid var(--critical);
+  background-color: rgba(255, 51, 51, 0.02);
+  border-left: 3px solid #ff3333;
 }
 
 /* Module Navigation Tabs */
 .module-tabs {
   display: flex;
-  gap: 4px;
-  padding: 0 20px 0;
+  gap: 8px;
+  padding: 0 16px 16px;
   flex-wrap: wrap;
   align-items: center;
-  border-bottom: 1px solid var(--border);
-  background: var(--panel);
+  border-bottom: 1px solid #1F2937;
+  background: rgba(15, 23, 42, 0.5);
   overflow-x: auto;
-  height: 52px;
 }
 
 .module-tabs::-webkit-scrollbar {
-  height: 2px;
+  height: 4px;
+}
+
+.module-tabs::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.module-tabs::-webkit-scrollbar-thumb {
+  background: #374151;
+  border-radius: 2px;
 }
 
 .tab-btn {
-  padding: 0 16px;
-  height: 100%;
+  padding: 8px 16px;
   background: transparent;
   border: none;
-  color: var(--text-muted);
+  color: #9CA3AF;
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
   white-space: nowrap;
   border-bottom: 2px solid transparent;
-  transition: all var(--duration) var(--ease);
-  display: flex;
-  align-items: center;
+  transition: all 0.2s ease;
 }
 
 .tab-btn:hover {
-  color: var(--text-bright);
+  color: #E5E7EB;
+  background: rgba(75, 85, 99, 0.1);
 }
 
 .tab-btn.active {
-  color: var(--text-bright);
-  border-bottom-color: var(--accent);
-  background: var(--accent-muted);
+  color: #3B82F6;
+  border-bottom-color: #3B82F6;
 }
 
 /* Main Content Area */
 .module-content {
-  padding: 24px;
-  height: calc(100vh - 184px);
+  padding: 16px;
+  height: calc(100vh - 200px);
   overflow-y: auto;
-  background: var(--bg);
+  background: #0f0f0f;
 }
 
-/* Overview Layout */
+.module-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.module-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.module-content::-webkit-scrollbar-thumb {
+  background: #374151;
+  border-radius: 4px;
+}
+
+.module-content::-webkit-scrollbar-thumb:hover {
+  background: #4B5563;
+}
+
+/* Overview Layout - Fixed Map + Sidebar */
 .overview-layout {
   display: grid;
   grid-template-columns: 1fr 340px;
-  gap: 24px;
+  gap: 16px;
   height: 100%;
 }
 
 .overview-map {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
+  background: #111827;
+  border: 1px solid #1F2937;
+  border-radius: 8px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   min-height: 500px;
-  box-shadow: var(--shadow-subtle);
 }
 
 .overview-sidebar {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
   overflow-y: auto;
 }
 
+.overview-sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.overview-sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.overview-sidebar::-webkit-scrollbar-thumb {
+  background: #374151;
+  border-radius: 3px;
+}
+
+/* Old Grid Layout - Fallback */
+.overview-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  height: 100%;
+}
+
 .overview-section {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
+  background: #111827;
+  border: 1px solid #1F2937;
+  border-radius: 8px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  box-shadow: var(--shadow-subtle);
 }
 
 .overview-section.full {
@@ -109,6 +151,10 @@
   .overview-layout {
     grid-template-columns: 1fr;
   }
+
+  .overview-sidebar {
+    height: auto;
+  }
 }
 
 @media (max-width: 768px) {
@@ -117,11 +163,21 @@
   }
 
   .module-tabs {
-    padding: 0 10px;
+    padding: 0 8px 8px;
+    gap: 4px;
+  }
+
+  .tab-btn {
+    padding: 6px 12px;
+    font-size: 12px;
   }
 
   .module-content {
-    padding: 16px;
+    padding: 8px;
     height: calc(100vh - 160px);
+  }
+
+  .overview-layout {
+    gap: 8px;
   }
 }

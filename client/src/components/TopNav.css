@@ -1,75 +1,69 @@
-/* Top Navigation - Minimal SaaS Theme */
 .top-nav {
-    height: 56px;
-    margin: 24px 24px 0 24px;
-    border-radius: var(--radius-lg);
+    height: 60px;
+    margin: 32px 32px 0 32px;
+    border-radius: 9999px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 24px;
+    padding: 0 32px;
     z-index: 100;
-    background: var(--panel);
-    backdrop-filter: blur(12px);
-    border: 1px solid var(--border);
-    box-shadow: var(--shadow-subtle);
-    transition: all var(--duration) var(--ease);
+    transition: background var(--transition-normal) var(--ease-smooth),
+        box-shadow var(--transition-normal) var(--ease-smooth);
 }
 
 .nav-brand {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 15px;
 }
 
 .logo {
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
     background: var(--accent);
     clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    box-shadow: var(--accent-glow);
 }
 
 .brand-text h1 {
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 0.15em;
+    font-size: 14px;
+    font-weight: 900;
+    letter-spacing: 0.2em;
     margin: 0;
-    color: var(--text-bright);
-    text-transform: uppercase;
+    color: #E6F1FF;
 }
 
 .brand-text .subtitle {
     font-size: 8px;
-    color: var(--text-muted);
-    letter-spacing: 0.1em;
+    color: var(--text-dim);
+    letter-spacing: 0.2em;
     font-weight: 500;
-    text-transform: uppercase;
 }
 
 .nav-metrics {
     display: flex;
     align-items: center;
-    gap: 24px;
+    gap: 30px;
 }
 
 .metric-item {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
 }
 
 .metric-item .label {
-    font-size: 9px;
-    color: var(--text-muted);
-    letter-spacing: 0.05em;
-    margin-bottom: 2px;
-    text-transform: uppercase;
+    font-size: 8px;
+    color: #4B6080;
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
 }
 
 .metric-item .value {
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 600;
     font-variant-numeric: tabular-nums;
-    color: var(--text-bright);
+    color: var(--text);
 }
 
 .metric-item .value.critical {
@@ -78,14 +72,14 @@
 
 .metric-divider {
     width: 1px;
-    height: 16px;
-    background: var(--border);
+    height: 20px;
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .nav-user {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 20px;
 }
 
 .user-info {
@@ -94,33 +88,33 @@
 
 .user-info .username {
     display: block;
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--text-bright);
+    font-size: 11px;
+    font-weight: 700;
+    color: #E6F1FF;
 }
 
 .user-info .role {
     display: block;
-    font-size: 10px;
-    color: var(--accent);
-    font-weight: 500;
-    text-transform: capitalize;
+    font-size: 9px;
+    color: #00F0FF;
+    font-weight: 600;
 }
 
 .logout-btn {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--border);
-    color: var(--text);
-    padding: 6px 14px;
-    font-size: 11px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--text-dim);
+    padding: 6px 16px;
+    font-size: 10px;
     font-weight: 600;
     cursor: pointer;
-    border-radius: var(--radius-sm);
-    transition: all var(--duration) var(--ease);
+    border-radius: 9999px;
+    transition: all var(--transition-normal) var(--ease-smooth);
 }
 
 .logout-btn:hover {
-    background: var(--critical);
-    border-color: var(--critical);
-    color: var(--text-bright);
+    background: rgba(239, 68, 68, 0.06);
+    border-color: rgba(239, 68, 68, 0.3);
+    color: var(--critical);
+    transform: translateY(-1px);
 }

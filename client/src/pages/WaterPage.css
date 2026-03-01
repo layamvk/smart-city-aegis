@@ -1,9 +1,8 @@
-/* Water Infrastructure Page - Minimal SaaS Theme */
+/* Water Infrastructure Page */
 .water-layout {
     display: grid;
-    grid-template-columns: 1fr 340px;
+    grid-template-columns: 1fr 320px;
     gap: 32px;
-    padding: 24px;
 }
 
 .water-main {
@@ -15,7 +14,6 @@
 .water-sidebar {
     display: flex;
     flex-direction: column;
-    gap: 32px;
 }
 
 /* Zone Group */
@@ -27,28 +25,29 @@
 .zone-group-header {
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin-bottom: 24px;
-    padding-bottom: 16px;
-    border-bottom: 1px solid var(--border);
+    gap: 10px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .zone-group-dot {
-    width: 6px;
-    height: 6px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
-    background: var(--accent);
+    background: #4DA3FF;
 }
 
 .zone-group-name {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
-    color: var(--text-bright);
+    color: #E6EDF3;
+    letter-spacing: 0.02em;
 }
 
 .zone-group-count {
-    font-size: 11px;
-    color: var(--text-muted);
+    font-size: 10px;
+    color: #9AA4B2;
     font-weight: 600;
     margin-left: auto;
 }
@@ -56,147 +55,163 @@
 .reservoirs-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-    gap: 24px;
+    gap: 20px;
 }
 
 /* Reservoir Card */
 .reservoir-card {
-    background: var(--panel-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 24px;
-    transition: all var(--duration) var(--ease);
+    background: rgba(18, 23, 32, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 14px;
+    padding: 20px;
+    transition: all 0.25s ease;
 }
 
 .reservoir-card:hover {
-    background: rgba(255, 255, 255, 0.02);
-    border-color: var(--text-muted);
+    background: rgba(25, 30, 42, 0.8);
+    border-color: rgba(77, 163, 255, 0.25);
+    transform: translateY(-2px);
 }
 
 .res-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
 }
 
 .res-name {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 600;
-    color: var(--text-bright);
+    color: #E6EDF3;
+    margin-bottom: 4px;
 }
 
 .res-time {
-    font-size: 11px;
-    color: var(--text-muted);
+    font-size: 10px;
+    color: #9AA4B2;
 }
 
 .res-status-pill {
     font-size: 10px;
-    font-weight: 600;
-    padding: 4px 12px;
-    border-radius: var(--radius-sm);
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 999px;
     border: 1px solid;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
 }
 
 .res-capacity-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
 }
 
 .metric-label {
     font-size: 10px;
-    color: var(--text-muted);
+    color: #9AA4B2;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
 }
 
 .metric-val {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text-bright);
+    font-size: 13px;
+    font-weight: 700;
+    color: #E6EDF3;
     font-variant-numeric: tabular-nums;
 }
 
 .res-bar-bg {
-    height: 4px;
+    height: 5px;
     background: rgba(255, 255, 255, 0.05);
-    border-radius: var(--radius-sm);
+    border-radius: 99px;
     overflow: hidden;
-    margin-bottom: 24px;
+    margin-bottom: 16px;
 }
 
 .res-bar-fg {
     height: 100%;
-    transition: width 0.8s var(--ease);
+    border-radius: 99px;
+    transition: width 0.8s ease;
 }
 
 .res-metrics-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-    margin-bottom: 24px;
-    padding-top: 20px;
-    border-top: 1px solid var(--border);
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
 }
 
 .res-metric {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 4px;
 }
 
 .res-metric label {
     font-size: 8px;
-    color: var(--text-muted);
-    font-weight: 600;
+    color: #6B7280;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.04em;
 }
 
 .res-metric span {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text-bright);
+    font-size: 12px;
+    font-weight: 700;
+    color: #E6EDF3;
     font-variant-numeric: tabular-nums;
 }
 
 .res-metric small {
-    font-size: 10px;
-    color: var(--text-muted);
+    font-size: 9px;
+    color: #9AA4B2;
+    font-weight: 400;
 }
 
 /* Flow Control */
 .flow-control {
-    padding-top: 20px;
-    border-top: 1px solid var(--border);
+    padding-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
 }
 
 .flow-control-header {
     display: flex;
     justify-content: space-between;
     font-size: 10px;
-    color: var(--text-muted);
+    color: #9AA4B2;
     font-weight: 600;
-    margin-bottom: 12px;
-    text-transform: uppercase;
+    margin-bottom: 10px;
 }
 
 .flow-val {
-    color: var(--accent);
-    font-weight: 600;
+    color: #4DA3FF;
+    font-weight: 700;
 }
 
 .flow-slider {
     width: 100%;
-    accent-color: var(--accent);
-    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
     height: 4px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 99px;
+    outline: none;
+    cursor: pointer;
+    accent-color: #4DA3FF;
+}
+
+.flow-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    background: #4DA3FF;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 0 3px rgba(77, 163, 255, 0.2);
 }
 
 /* Alerts Panel */
@@ -210,61 +225,66 @@
     display: flex;
     align-items: flex-start;
     gap: 12px;
-    padding: 16px;
-    border-radius: var(--radius-md);
-    border: 1px solid var(--border);
-    background: var(--panel-card);
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .alert-critical {
-    border-color: var(--critical);
+    background: rgba(255, 92, 92, 0.06);
+    border-color: rgba(255, 92, 92, 0.12);
 }
 
 .alert-warning {
-    border-color: var(--warning);
+    background: rgba(245, 176, 65, 0.06);
+    border-color: rgba(245, 176, 65, 0.12);
+}
+
+.alert-info {
+    background: rgba(255, 255, 255, 0.03);
 }
 
 .alert-dot {
-    width: 6px;
-    height: 6px;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
     flex-shrink: 0;
-    margin-top: 5px;
+    margin-top: 4px;
 }
 
 .alert-dot-critical {
-    background: var(--critical);
+    background: #FF5C5C;
 }
 
 .alert-dot-warning {
-    background: var(--warning);
+    background: #F5B041;
 }
 
 .alert-dot-info {
-    background: var(--text-muted);
+    background: #9AA4B2;
 }
 
 .alert-body {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 3px;
 }
 
 .alert-msg {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
-    color: var(--text-bright);
+    color: #E6EDF3;
 }
 
 .alert-loc {
-    font-size: 11px;
-    color: var(--text-muted);
+    font-size: 10px;
+    color: #9AA4B2;
 }
 
 .alert-time {
-    font-size: 11px;
-    color: var(--text-muted);
+    font-size: 10px;
+    color: #9AA4B2;
     flex-shrink: 0;
     font-variant-numeric: tabular-nums;
 }
@@ -273,31 +293,30 @@
 .water-summary-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 16px;
+    gap: 12px;
 }
 
 .water-summary-card {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 20px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    padding: 14px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    box-shadow: var(--shadow-subtle);
+    gap: 6px;
 }
 
 .water-summary-card label {
-    font-size: 10px;
-    font-weight: 600;
-    color: var(--text-muted);
+    font-size: 9px;
+    font-weight: 700;
+    color: #9AA4B2;
     text-transform: uppercase;
     letter-spacing: 0.05em;
 }
 
 .water-summary-card span {
-    font-size: 24px;
-    font-weight: 600;
-    color: var(--text-bright);
+    font-size: 20px;
+    font-weight: 700;
+    color: #E6EDF3;
     font-variant-numeric: tabular-nums;
 }

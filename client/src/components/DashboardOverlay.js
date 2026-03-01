@@ -60,37 +60,34 @@ const DashboardOverlay = () => {
                 <SystemDiagnostics />
 
                 {/* Unified Management Subsystem */}
-                <div className="dashboard-panel" style={{ marginTop: 24, padding: 20 }}>
-                    <div style={{ fontSize: 9, color: 'var(--text-muted)', letterSpacing: '0.1em', marginBottom: 16, display: 'flex', justifyContent: 'space-between', fontWeight: 600, textTransform: 'uppercase' }}>
+                <div className="dashboard-panel" style={{ marginTop: 20, padding: 15 }}>
+                    <div style={{ fontSize: 9, color: '#4B6080', letterSpacing: '0.15em', marginBottom: 15, display: 'flex', justifyContent: 'space-between' }}>
                         <span>SUBSYSTEM MANAGEMENT</span>
-                        <span style={{ color: 'var(--accent)' }}>{activeControl.toUpperCase()} ACTIVE</span>
+                        <span style={{ color: '#00F0FF' }}>{activeControl.toUpperCase()} ACTIVE</span>
                     </div>
 
-                    <div style={{ display: 'flex', gap: 8, marginBottom: 20, overflowX: 'auto', paddingBottom: 8 }}>
+                    <div style={{ display: 'flex', gap: 5, marginBottom: 20, overflowX: 'auto', paddingBottom: 5 }}>
                         {controlTabs.map(tab => (
                             <button
                                 key={tab.id}
                                 onClick={() => setActiveControl(tab.id)}
                                 style={{
-                                    padding: '6px 14px',
-                                    borderRadius: 'var(--radius-sm)',
+                                    padding: '6px 12px',
+                                    borderRadius: 4,
                                     border: '1px solid',
-                                    borderColor: activeControl === tab.id ? 'var(--accent)' : 'var(--border)',
-                                    background: activeControl === tab.id ? 'var(--accent-muted)' : 'transparent',
-                                    color: activeControl === tab.id ? 'var(--accent)' : 'var(--text-muted)',
+                                    borderColor: activeControl === tab.id ? '#00F0FF' : 'rgba(255,255,255,0.1)',
+                                    background: activeControl === tab.id ? 'rgba(0,240,255,0.1)' : 'transparent',
+                                    color: activeControl === tab.id ? '#00F0FF' : '#8899BB',
                                     fontSize: 10,
-                                    fontWeight: 600,
                                     cursor: 'pointer',
                                     whiteSpace: 'nowrap',
-                                    transition: 'all var(--duration) var(--ease)',
-                                    textTransform: 'uppercase'
+                                    transition: 'all 0.2s'
                                 }}
                             >
                                 {tab.label}
                             </button>
                         ))}
                     </div>
-
 
                     <div className="subsystem-view" style={{ maxHeight: '250px', overflowY: 'auto', paddingRight: 5 }}>
                         <ActiveComponent />

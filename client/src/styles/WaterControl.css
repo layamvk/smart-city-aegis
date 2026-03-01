@@ -1,7 +1,8 @@
-/* Water Control Styling - Minimal SaaS Theme */
+/* Water Control Styling */
 .water-control-module {
-  padding: 24px;
+  padding: 16px;
   background: transparent;
+  border-radius: 0;
   height: 100%;
   width: 100%;
   overflow-y: auto;
@@ -13,67 +14,67 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
-  border-bottom: 1px solid var(--border);
+  margin-bottom: 16px;
+  border-bottom: 1px solid #333;
   padding-bottom: 12px;
 }
 
 .water-control-module h3 {
   margin: 0;
   font-size: 16px;
-  color: var(--text-bright);
+  color: #fff;
 }
 
 .water-zones-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 16px;
-  margin-bottom: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
 }
 
 .water-zone-card {
-  background: var(--panel-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  padding: 16px;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 12px;
   cursor: pointer;
-  transition: all var(--duration) var(--ease);
+  transition: all 0.2s ease;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
 .water-zone-card:hover {
-  background: rgba(255, 255, 255, 0.02);
-  border-color: rgba(255, 255, 255, 0.1);
+  background: #222;
+  border-color: #444;
 }
 
 .water-zone-card.selected {
-  background: var(--panel);
-  border-color: var(--accent);
-  box-shadow: var(--shadow-subtle);
+  background: #222;
+  border-color: #66ccff;
+  box-shadow: 0 0 16px rgba(102, 204, 255, 0.2);
 }
 
 .water-zone-card.contaminated {
-  border-color: var(--warning);
-  background: rgba(245, 158, 11, 0.05);
+  border-color: #ff6600;
+  background: rgba(255, 102, 0, 0.05);
 }
 
 .zone-name {
-  font-weight: 600;
+  font-weight: bold;
   font-size: 13px;
-  color: var(--text-bright);
-  margin-bottom: 12px;
+  color: #fff;
+  margin-bottom: 8px;
 }
 
 .water-level-display {
   width: 40px;
   height: 100px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  background: rgba(255, 255, 255, 0.02);
+  border: 2px solid #333;
+  border-radius: 4px;
+  background: #0a0a0a;
   overflow: hidden;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   position: relative;
   display: flex;
   flex-direction: column-reverse;
@@ -81,8 +82,7 @@
 
 .water-level-bar {
   width: 100%;
-  transition: all 0.4s ease;
-  background: var(--accent);
+  transition: all 0.3s ease;
 }
 
 .zone-stats {
@@ -93,132 +93,135 @@
 
 .water-level-text {
   margin: 0;
-  font-weight: 600;
-  color: var(--text-bright);
-  font-size: 13px;
+  font-weight: bold;
+  color: #fff;
+  font-size: 12px;
 }
 
 .flow-rate {
-  margin: 4px 0;
-  color: var(--text-muted);
+  margin: 2px 0;
+  color: #aaa;
   font-size: 10px;
-  text-transform: uppercase;
 }
 
 .contamination-warning {
   margin: 4px 0 0 0;
-  color: var(--warning);
-  font-weight: 600;
+  color: #ff6600;
+  font-weight: bold;
   font-size: 10px;
 }
 
 .water-detail-panel {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 24px;
-  margin-top: 24px;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 16px;
+  margin-top: 16px;
 }
 
 .water-detail-panel h4 {
-  margin: 0 0 16px 0;
-  color: var(--accent);
+  margin: 0 0 12px 0;
+  color: #66ccff;
   font-size: 14px;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
 }
 
 .detail-info {
-  background: var(--panel-card);
-  padding: 16px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  margin-bottom: 20px;
+  background: #0f0f0f;
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 12px;
   font-size: 12px;
 }
 
 .detail-info p {
-  margin: 8px 0;
-  color: var(--text-muted);
+  margin: 6px 0;
+  color: #aaa;
 }
 
 .detail-info strong {
-  color: var(--text-bright);
+  color: #fff;
 }
 
 .control-section {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
 }
 
 .flow-adjustment {
   display: grid;
   grid-template-columns: 1fr auto;
-  gap: 12px;
+  gap: 8px;
 }
 
 .flow-adjustment input {
-  background: var(--panel-card);
-  border: 1px solid var(--border);
-  color: var(--text-bright);
-  padding: 10px 12px;
-  border-radius: var(--radius-sm);
+  background: #0f0f0f;
+  border: 1px solid #333;
+  color: #fff;
+  padding: 8px;
+  border-radius: 4px;
   font-size: 12px;
 }
 
 .flow-adjustment input:focus {
   outline: none;
-  border-color: var(--accent);
+  border-color: #66ccff;
 }
 
 .btn-adjust {
-  background: var(--accent);
-  color: var(--text-bright);
+  background: #0066ff;
+  color: #fff;
   border: none;
-  padding: 10px 20px;
-  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  border-radius: 4px;
   cursor: pointer;
-  font-weight: 600;
+  font-weight: bold;
   font-size: 12px;
-  transition: all var(--duration) var(--ease);
+  transition: all 0.2s ease;
+}
+
+.btn-adjust:hover {
+  background: #0080ff;
 }
 
 .btn-shutdown {
-  background: var(--critical);
-  color: var(--text-bright);
+  background: #ff3333;
+  color: #fff;
   border: none;
-  padding: 10px 20px;
-  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  border-radius: 4px;
   cursor: pointer;
-  font-weight: 600;
+  font-weight: bold;
   font-size: 12px;
-  transition: all var(--duration) var(--ease);
+  transition: all 0.2s ease;
+}
+
+.btn-shutdown:hover {
+  background: #ff5555;
 }
 
 .contamination-alert {
-  background: rgba(245, 158, 11, 0.05);
-  border: 1px solid var(--warning);
-  border-radius: var(--radius-md);
-  padding: 16px;
-  margin-top: 20px;
+  background: rgba(255, 102, 0, 0.1);
+  border: 1px solid #ff6600;
+  border-radius: 6px;
+  padding: 12px;
+  margin-top: 16px;
 }
 
 .contamination-alert h4 {
-  margin: 0 0 10px 0;
-  color: var(--warning);
+  margin: 0 0 8px 0;
+  color: #ff6600;
   font-size: 12px;
-  text-transform: uppercase;
 }
 
 .contamination-alert ul {
   list-style: none;
   padding: 0;
   margin: 0;
+  font-size: 11px;
 }
 
 .contamination-alert li {
-  color: var(--warning);
+  color: #ff6600;
   padding: 4px 0;
-  font-size: 11px;
 }
