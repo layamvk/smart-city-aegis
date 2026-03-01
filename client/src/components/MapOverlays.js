@@ -55,11 +55,11 @@ const MapOverlays = ({ activeZone, onZoneClick, onNodeClick }) => {
         const isActive = id === activeZone;
         const isPolygon = feature.geometry?.type?.includes('Polygon');
         return {
-          color: isActive ? '#FFFFFF' : '#4F46E5',
-          weight: isActive ? 3 : 2,
-          opacity: isActive ? 1 : 0.85,
-          fillColor: '#4F46E5',
-          fillOpacity: isPolygon ? (isActive ? 0.3 : 0.05) : 0,
+          color: isActive ? '#00E5FF' : 'rgba(100, 140, 170, 0.35)',
+          weight: isActive ? 2 : 1.5,
+          opacity: 1,
+          fillColor: isActive ? '#00E5FF' : 'rgba(100, 140, 170, 0.1)',
+          fillOpacity: isPolygon ? (isActive ? 0.15 : 0.02) : 0,
         };
       },
       onEachFeature: (feature, layer) => {
@@ -73,11 +73,11 @@ const MapOverlays = ({ activeZone, onZoneClick, onNodeClick }) => {
 
         layer.on('mouseover', () => {
           if (id === activeZone) return;
-          layer.setStyle({ weight: 3, color: '#FFFFFF', opacity: 1 });
+          layer.setStyle({ weight: 2, color: '#00E5FF', opacity: 0.7 });
         });
         layer.on('mouseout', () => {
           if (id === activeZone) return;
-          layer.setStyle({ weight: 2, color: '#4F46E5', opacity: 0.85 });
+          layer.setStyle({ weight: 1.5, color: 'rgba(100, 140, 170, 0.35)', opacity: 1 });
         });
 
         layer.bindTooltip(`<b>${id}</b>`, { sticky: true, className: 'map-tooltip' });
