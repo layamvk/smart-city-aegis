@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState, useCallback, useMemo } from 'react';
 import { TRAFFIC_INFRA, WATER_INFRA, GRID_INFRA, LIGHT_INFRA } from './MockData';
-import { convertKMLString } from './convertKML';
+// KML parser no longer used — loading pre-converted GeoJSON directly
 import { tickDynamicEngine } from './DynamicEngine';
 
 const CityEngineContext = createContext();
@@ -76,30 +76,47 @@ export const CityEngineProvider = ({ children }) => {
 
     const [zones, setZones] = useState({});
 
+    // Production-safe KML loader (runs once on mount)
+    const boundaryLoadedRef = useRef(false);
+
     useEffect(() => {
-        const kmlPath = '/0f0ccbda-9485-4964-b3b1-6ce53af82bbb.kml';
-        console.log(`[CORE] Fetching: ${kmlPath}`);
+        // Pre-converted GeoJSON — 50KB, no XML parsing, works reliably on Vercel
+        const GEOJSON_PATH = '/chennai-boundary.geojson';
 
-        fetch(kmlPath)
-            .then(res => {
-                if (!res.ok) throw new Error(`HTTP ${res.status}`);
-                return res.text();
-            })
-            .then(text => {
-                console.log(`[CORE] KML received: ${text.length} bytes`);
-                const geojson = convertKMLString(text);
+        const loadBoundary = async (attempt = 1) => {
+            if (boundaryLoadedRef.current) return;
+            console.log(`[CORE] Fetching boundary (attempt ${attempt}): ${GEOJSON_PATH}`);
 
-                if (!geojson || !geojson.features.length) {
-                    console.error('[CORE] No features after KML parse!');
-                    return;
+            try {
+                const res = await fetch(GEOJSON_PATH, { cache: 'no-cache' });
+
+                if (!res.ok) {
+                    throw new Error(`HTTP ${res.status} — ${res.statusText}`);
                 }
 
-                console.log(`[CORE] ${geojson.features.length} polygon features parsed`);
+                const contentType = res.headers.get('content-type') || '';
+                const blob = await res.blob();
+                console.log(`[CORE] GeoJSON received: ${blob.size} bytes (${contentType})`);
+
+                if (blob.size < 100) {
+                    throw new Error(`GeoJSON too small (${blob.size} bytes) — likely 404 HTML returned`);
+                }
+
+                const text = await blob.text();
+                let geojson;
+                try { geojson = JSON.parse(text); }
+                catch (parseErr) { throw new Error(`JSON parse failed: ${parseErr.message}`); }
+
+                if (!geojson || !geojson.features || geojson.features.length === 0) {
+                    throw new Error('No features in GeoJSON — check /public/chennai-boundary.geojson');
+                }
+
+                console.log(`[CORE] ${geojson.features.length} polygon features parsed successfully`);
+                boundaryLoadedRef.current = true;
 
                 const initZones = {};
                 geojson.features.forEach((f, i) => {
                     const id = f.properties?.name || `Zone-${i}`;
-                    // Each feature is now a plain Polygon — no GeometryCollection
                     if (!initZones[id]) {
                         initZones[id] = {
                             name: id, id,
@@ -117,15 +134,26 @@ export const CityEngineProvider = ({ children }) => {
                             riskHistory: Array.from({ length: 12 }, () => 15 + Math.random() * 15),
                         };
                     }
-                    // Accumulate all rings for this zone (handles multi-polygon wards)
                     initZones[id].features.push(f);
                 });
 
                 console.log(`[CORE] ${Object.keys(initZones).length} GCC zones ready`);
                 setZones(initZones);
-            })
-            .catch(err => console.error('[CORE] KML fetch error:', err));
-    }, []);
+
+            } catch (err) {
+                console.error(`[CORE] KML fetch error (attempt ${attempt}):`, err.message);
+                if (attempt < 3) {
+                    const delay = attempt * 2000;
+                    console.log(`[CORE] Retrying in ${delay}ms...`);
+                    setTimeout(() => loadBoundary(attempt + 1), delay);
+                } else {
+                    console.error('[CORE] All boundary load attempts exhausted. Map renders without ward boundaries.');
+                }
+            }
+        };
+
+        loadBoundary();
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     // --- ACTIONS ---
     const emit = useCallback((type, payload) => {

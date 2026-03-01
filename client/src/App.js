@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { CityEngineProvider } from './engine/CityEngine';
 import { MapProvider } from './context/MapContext';
 
 import Login from './components/Login';
-import MapRoot from './components/MapRoot';
 import TopNav from './components/TopNav';
 import SideNav from './components/SideNav';
 import ZoneDrawer from './components/ZoneDrawer';
@@ -22,6 +21,21 @@ import LightingPage from './pages/LightingPage';
 import EmergencyPage from './pages/EmergencyPage';
 import GovernancePage from './pages/GovernancePage';
 import SecurityPage from './pages/SecurityPage';
+
+// Lazy-load the heavy Leaflet map component — reduces initial bundle size
+const MapRoot = lazy(() => import('./components/MapRoot'));
+
+const MapFallback = () => (
+  <div style={{
+    position: 'absolute', inset: 0,
+    background: 'var(--bg, #0A0E16)',
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+    color: 'rgba(255,255,255,0.3)', fontSize: 12, letterSpacing: '0.1em',
+    textTransform: 'uppercase', fontFamily: 'Inter, sans-serif'
+  }}>
+    Initialising map…
+  </div>
+);
 
 const AppContent = () => {
   const location = useLocation();
@@ -42,7 +56,7 @@ const AppContent = () => {
   const handleZoneClick = (zoneId, zoneData) => {
     setSelectedZone(zoneId);
     setSelectedZoneData(zoneData);
-    setSelectedNode(null); // clear node selection when changing zone
+    setSelectedNode(null);
   };
 
   const handleNodeClick = (nodeData) => {
@@ -51,13 +65,15 @@ const AppContent = () => {
 
   return (
     <div className="app-root">
-      {/* Persistent map background — never unmounts */}
-      <MapRoot
-        enabled={isOverview}
-        activeZone={selectedZone}
-        onZoneClick={handleZoneClick}
-        onNodeClick={handleNodeClick}
-      />
+      {/* Persistent map background — never unmounts after first load */}
+      <Suspense fallback={<MapFallback />}>
+        <MapRoot
+          enabled={isOverview}
+          activeZone={selectedZone}
+          onZoneClick={handleZoneClick}
+          onNodeClick={handleNodeClick}
+        />
+      </Suspense>
 
       <div className={`map-cinematic-overlay ${!isOverview ? 'active' : ''}`} />
 

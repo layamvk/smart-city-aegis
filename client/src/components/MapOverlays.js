@@ -34,7 +34,6 @@ const MapOverlays = ({ activeZone, onZoneClick, onNodeClick }) => {
     const cacheKey = `${zoneKeys.length}:${activeZone}`;
 
     // Collect all flat features from all zones
-    // Each zone stores an array `features` of individual Polygon/LineString features
     const allFeatures = [];
     zoneKeys.forEach(k => {
       const z = zones[k];
@@ -47,7 +46,7 @@ const MapOverlays = ({ activeZone, onZoneClick, onNodeClick }) => {
     zoneLayerRef.current = null;
 
     if (allFeatures.length === 0) {
-      console.log('[MapOverlays] No features to render yet');
+      console.log('[MapOverlays] No features to render yet — waiting for KML load');
       return;
     }
 
@@ -60,11 +59,11 @@ const MapOverlays = ({ activeZone, onZoneClick, onNodeClick }) => {
         const id = feature.properties?.id || feature.properties?.name || feature.id;
         const isActive = id === activeZone;
         return {
-          color: isActive ? '#FFFFFF' : '#00E5FF',
-          weight: isActive ? 3 : 1.5,
+          color: isActive ? '#FFFFFF' : '#4F46E5',
+          weight: isActive ? 3 : 2,
           opacity: isActive ? 1 : 0.85,
-          fillColor: '#00E5FF',
-          fillOpacity: isActive ? 0.25 : 0.06,
+          fillColor: '#4F46E5',
+          fillOpacity: isActive ? 0.25 : 0.05,
         };
       },
       onEachFeature: (feature, layer) => {
@@ -82,24 +81,35 @@ const MapOverlays = ({ activeZone, onZoneClick, onNodeClick }) => {
         });
         layer.on('mouseout', () => {
           if (id === activeZone) return;
-          layer.setStyle({ color: '#00E5FF', weight: 1.5, opacity: 0.85 });
+          layer.setStyle({ color: '#4F46E5', weight: 2, opacity: 0.85 });
         });
 
         layer.bindTooltip(`<b>${id}</b>`, { sticky: true, className: 'map-tooltip' });
       },
     }).addTo(zonesLayer);
 
-    // Auto-fit view when zones first load
+    // Auto-fit view when zones first load — delay ensures map is fully painted
     if (builtForRef.current === null) {
       builtForRef.current = cacheKey;
-      try {
-        const bounds = zoneLayerRef.current.getBounds();
-        if (bounds.isValid()) mapInstance.fitBounds(bounds, { padding: [50, 50] });
-      } catch (_) { }
+      setTimeout(() => {
+        try {
+          if (!zoneLayerRef.current) return;
+          const bounds = zoneLayerRef.current.getBounds();
+          if (bounds && bounds.isValid()) {
+            console.log(`[MapOverlays] fitBounds → SW:${bounds.getSouthWest()} NE:${bounds.getNorthEast()}`);
+            mapInstance.fitBounds(bounds, { padding: [50, 50], maxZoom: 13 });
+          } else {
+            console.warn('[MapOverlays] fitBounds skipped — bounds not valid');
+          }
+        } catch (e) {
+          console.warn('[MapOverlays] fitBounds error:', e.message);
+        }
+      }, 400);
     }
     builtForRef.current = cacheKey;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mapInstance, zones, activeZone]);
+
 
   // ── 2. Traffic Junctions ──────────────────────────────────────────────────
   useEffect(() => {
