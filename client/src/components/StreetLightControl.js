@@ -84,7 +84,7 @@ const StreetLightControl = () => {
             className={`zone-light-card ${selectedZone === zone ? 'selected' : ''}`}
             onClick={() => setSelectedZone(zone)}
           >
-            <div 
+            <div
               className="light-preview"
               style={{
                 backgroundColor: getBrightnessColor(zones[zone]?.brightness || 0),
@@ -123,7 +123,7 @@ const StreetLightControl = () => {
               <span className="slider-value">{zones[selectedZone].brightness.toFixed(0)}%</span>
             </div>
 
-            <button 
+            <button
               onClick={() => handleEnergySave(selectedZone)}
               className={`btn-energy-save ${zones[selectedZone].autoMode ? 'enabled' : 'disabled'}`}
             >

@@ -13,6 +13,7 @@ import NodeDrawer from './components/NodeDrawer';
 import MetricsBar from './components/MetricsBar';
 import LiveSecurityDrill from './components/LiveSecurityDrill/LiveSecurityDrill';
 import CommandPalette from './components/CommandPalette';
+import AmbientCursor from './components/AmbientCursor';
 
 // Pages
 import OverviewPage from './pages/OverviewPage';
@@ -34,8 +35,17 @@ const AppContent = () => {
 
   if (!user) {
     return (
-      <div className="login-screen">
-        <Login />
+      <div className="app-root">
+        <AmbientCursor />
+        <div className="blob-stage" aria-hidden="true">
+          <div className="blob blob-1" />
+          <div className="blob blob-2" />
+          <div className="blob blob-3" />
+          <div className="blob blob-4" />
+        </div>
+        <div className="login-screen">
+          <Login />
+        </div>
       </div>
     );
   }
@@ -52,6 +62,7 @@ const AppContent = () => {
 
   return (
     <div className="app-root">
+      <AmbientCursor />
 
       {/* ── Fluid Blob Background ───────────────────────────── */}
       <div className="blob-stage" aria-hidden="true">

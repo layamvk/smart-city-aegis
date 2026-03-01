@@ -1,0 +1,32 @@
+1d26757 Fix: add hackathon judge credentials mock to bypass missing deployment backend API
+6ec6750 Style: Update map boundaries to use a mild, subtle RGB color that matches the dark theme
+d2b569e Feat: Add mock fallback for login/register to support Vercel Demo mode
+45e5205 Restore 'Unified Minimal Dark Theme' correctly
+fa8548f Fix: correctly apply the 400ms fitBounds timeout on map boundary rendering
+6f4e373 Revert 'Unified Minimal Dark Theme' back to original UI requested by user
+6acd26a Rebase Map component purely back to original functioning version
+1f2e8d3 Revert map rendering architectural changes and remove map locks, keep GeoJSON loading style
+5235bc8 Fix(build): handle missing missing MOCK_INCIDENTS export and missing useRef import
+461d6c5 Fix: remove build overrides from vercel.json (cd client dir conflict)
+2e2bf94 Fix: lock map to Chennai (maxBounds+minZoom), direct GeoJSON boundary fetch in MapOverlays, fitBounds fallback to setView
+6928d93 Fix: KMLGeoJSON conversion, production-safe boundary loading, lazy map, vercel.json
+9fd9b67 Refactor: Unified Minimal Dark Theme for Smart City Aegis Dashboard
+95e570d chore: remove KML debug test page
+14feb6e fix: bypass togeojson entirely - parse KML coordinates directly from DOM
+fd5f981 fix(root-cause): flatten GeometryCollection from KML so Leaflet can render ward boundaries
+1f908bf fix(critical): add layers to map BEFORE setMapInstance; fix MockData coords; split MapOverlays effects
+3245342 fix: restore pixel-perfect KML boundaries and vibrant infrastructure dots
+e013896 fix: restore real KML boundaries and markers with enhanced visibility and reactive map state
+89a11b0 fix: remove mock polygons and force real KML boundaries visibility
+be68281 fix: restore missing KML boundaries and enhance map dot visibility
+aa08dbd fix: restore KML boundary outlines by supporting LineStrings and forcing layer rebuild
+269aedb fix: ensure polygons and markers are visible by providing fallback data and improving map overlay logic
+9c16d86 fix: enable trust proxy for correct client IP identification
+4e24656 fix: update CORS to allow Vercel origins and improve security headers
+d9f5b12 fix: remove unused ZONE_COLORS to fix Vercel build
+9685d8f fix: resolve remaining unused variables and imports for Vercel build
+115c65d fix: remove unused variables and imports to fix Vercel build
+efde900 fix: resolve IPv6 rate limit validation error
+997a57a docs: include detailed Phase-by-Phase Security Audit report
+32e7ccb docs: upgrade README to enterprise security standards
+6bdf269 chore: initial production-ready security release

@@ -37,7 +37,10 @@
     font-weight: 400;
     letter-spacing: 0.02em;
     border-radius: 10px;
-    transition: all var(--transition-normal) var(--ease-smooth);
+    transition: transform var(--transition-normal) var(--ease-spring),
+        box-shadow var(--transition-normal) var(--ease-smooth),
+        background var(--transition-normal) var(--ease-smooth),
+        color var(--transition-normal) var(--ease-smooth);
     background: transparent;
     position: relative;
     overflow: hidden;
@@ -60,7 +63,7 @@
 .nav-link:hover {
     background: rgba(255, 255, 255, 0.04);
     color: var(--text);
-    transform: translateX(6px) scale(1.02);
+    transform: translate3d(4px, -5px, 0) scale(1.02);
     opacity: 1;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }

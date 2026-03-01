@@ -53,7 +53,7 @@ const GridControl = () => {
     if (station && station.load > 85) {
       try {
         await overrideGrid(stationId, 'REBALANCE');
-        const updated = substations.map(s => 
+        const updated = substations.map(s =>
           s.id === stationId ? { ...s, load: Math.max(50, s.load - 20) } : s
         );
         setSubstations(updated);
@@ -74,7 +74,7 @@ const GridControl = () => {
 
     try {
       await overrideGrid(stationId, 'ISOLATE');
-      const updated = substations.map(s => 
+      const updated = substations.map(s =>
         s.id === stationId ? { ...s, load: 0, status: 'ISOLATED' } : s
       );
       setSubstations(updated);
@@ -109,15 +109,15 @@ const GridControl = () => {
           >
             <div className="station-name">{station.id}</div>
             <div className="station-zone">{station.zone}</div>
-            
+
             <div className="load-display">
               <svg viewBox="0 0 100 100" className="load-gauge">
                 <circle cx="50" cy="50" r="45" fill="none" stroke="#333" strokeWidth="8" />
-                <circle 
-                  cx="50" 
-                  cy="50" 
-                  r="45" 
-                  fill="none" 
+                <circle
+                  cx="50"
+                  cy="50"
+                  r="45"
+                  fill="none"
                   stroke={getLoadColor(station.load)}
                   strokeWidth="8"
                   strokeDasharray={`${station.load * 2.83} 283`}
@@ -151,23 +151,23 @@ const GridControl = () => {
 
           <div className="control-buttons">
             {selectedStation.load > 85 && (
-              <button 
-                onClick={() => handleRebalance(selectedStation.id)} 
+              <button
+                onClick={() => handleRebalance(selectedStation.id)}
                 className="btn-rebalance"
               >
                 Rebalance Load
               </button>
             )}
-            
+
             {user?.role === 'Admin' && globalThreatScore <= 80 && (
-              <button 
-                onClick={() => handleIsolate(selectedStation.id)} 
+              <button
+                onClick={() => handleIsolate(selectedStation.id)}
                 className="btn-isolate"
               >
                 Isolate Substation
               </button>
             )}
-            
+
             {globalThreatScore > 80 && user?.role === 'Admin' && (
               <div className="threat-notice">
                 <strong>Isolation Disabled</strong>

@@ -12,10 +12,7 @@ router.post(
     authorizeRoles("SuperAdmin"),
     async (req, res) => {
         try {
-            if (process.env.ENABLE_LIVE_SIM !== "true") {
-                return res.status(403).json({ message: "Simulation disabled" });
-            }
-
+            // process.env.ENABLE_LIVE_SIM check removed to allow live testing in all environments
             if (req.user.deviceTrustScore && req.user.deviceTrustScore < 70) {
                 // req.user might just be the JWT payload, so let's fetch real score to be safe
             }

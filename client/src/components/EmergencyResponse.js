@@ -79,8 +79,8 @@ const EmergencyResponse = () => {
   };
 
   const handleEscalateSeverity = (incidentId) => {
-    setIncidents(prev => prev.map(incident => 
-      incident._id === incidentId 
+    setIncidents(prev => prev.map(incident =>
+      incident._id === incidentId
         ? { ...incident, severity: incident.severity === 'HIGH' ? 'CRITICAL' : 'HIGH' }
         : incident
     ));
@@ -180,7 +180,7 @@ const EmergencyResponse = () => {
                 <button onClick={handleDispatch} className="btn-dispatch">
                   Dispatch Unit
                 </button>
-                <button 
+                <button
                   onClick={() => handleEscalateSeverity(selectedIncident._id)}
                   className="btn-escalate"
                 >
