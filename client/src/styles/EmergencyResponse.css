@@ -1,8 +1,7 @@
-/* Emergency Response Styling */
+/* Emergency Response Styling - Minimal SaaS Theme */
 .emergency-response-module {
-  padding: 16px;
+  padding: 24px;
   background: transparent;
-  border-radius: 0;
   height: 100%;
   width: 100%;
   overflow-y: auto;
@@ -14,174 +13,193 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
-  border-bottom: 1px solid #333;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--border);
   padding-bottom: 12px;
 }
 
 .emergency-response-module h3 {
   margin: 0;
   font-size: 16px;
-  color: #fff;
+  color: var(--text-bright);
 }
 
 .incident-count {
-  font-size: 12px;
-  color: #ff3333;
-  font-weight: bold;
-  background: rgba(255, 51, 51, 0.1);
-  padding: 4px 8px;
-  border-radius: 4px;
+  font-size: 11px;
+  color: var(--critical);
+  font-weight: 600;
+  background: rgba(239, 68, 68, 0.05);
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
 
 .incidents-list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin-bottom: 16px;
+  gap: 12px;
+  margin-bottom: 24px;
   max-height: 400px;
   overflow-y: auto;
 }
 
 .no-incidents {
-  background: #1a1a1a;
-  border: 1px solid #333;
-  border-radius: 6px;
-  padding: 16px;
+  background: var(--panel-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 24px;
   text-align: center;
-  color: #888;
+  color: var(--text-muted);
   font-size: 12px;
 }
 
 .incident-card {
-  background: #1a1a1a;
-  border: 1px solid #333;
-  border-left: 4px solid #ff3333;
-  border-radius: 6px;
-  padding: 12px;
+  background: var(--panel-card);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--critical);
+  border-radius: var(--radius-md);
+  padding: 16px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--duration) var(--ease);
   display: grid;
   grid-template-columns: auto 1fr auto;
-  gap: 12px;
+  gap: 16px;
   align-items: start;
 }
 
 .incident-card:hover {
-  background: #222;
-  border-color: #444;
+  background: rgba(255, 255, 255, 0.02);
+  border-color: rgba(255, 255, 255, 0.1);
 }
 
 .incident-card.selected {
-  background: #222;
-  border-color: #66ccff;
-  box-shadow: 0 0 16px rgba(102, 204, 255, 0.2);
+  background: var(--panel);
+  border-color: var(--accent);
+  box-shadow: var(--shadow-subtle);
 }
 
 .incident-card.pulsing {
-  animation: pulse-incident 1s ease-in-out infinite;
+  animation: soft-pulse 2s ease-in-out infinite;
 }
 
-@keyframes pulse-incident {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
+@keyframes soft-pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.8;
+  }
 }
 
 .incident-type-icon {
-  font-size: 24px;
+  font-size: 20px;
+  color: var(--critical);
 }
 
 .incident-info h4 {
-  margin: 0 0 4px 0;
+  margin: 0 0 6px 0;
   font-size: 13px;
-  color: #fff;
+  color: var(--text-bright);
 }
 
 .incident-info p {
-  margin: 2px 0;
+  margin: 4px 0;
   font-size: 11px;
-  color: #888;
+  color: var(--text-muted);
 }
 
 .incident-location {
-  color: #aaa;
+  color: var(--text);
   font-weight: 500;
 }
 
 .incident-status {
   display: flex;
+  margin-top: 8px;
 }
 
 .status-badge {
   display: inline-block;
   font-size: 10px;
-  padding: 2px 6px;
-  border-radius: 3px;
-  font-weight: bold;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .status-open {
-  background: rgba(255, 51, 51, 0.2);
-  color: #ff3333;
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--critical);
 }
 
 .status-dispatched {
-  background: rgba(255, 170, 0, 0.2);
-  color: #ffaa00;
+  background: rgba(245, 158, 11, 0.1);
+  color: var(--warning);
 }
 
 .status-closed {
-  background: rgba(0, 204, 68, 0.2);
-  color: #00cc44;
+  background: rgba(34, 197, 94, 0.1);
+  color: var(--success);
 }
 
 .incident-time {
   font-size: 10px;
-  color: #666;
+  color: var(--text-muted);
+  opacity: 0.7;
 }
 
 .assigned-unit {
   font-size: 11px;
-  color: #66ccff;
+  color: var(--accent);
   text-align: right;
   white-space: nowrap;
+  font-weight: 500;
 }
 
 .incident-detail-panel {
-  background: #1a1a1a;
-  border: 1px solid #333;
-  border-radius: 6px;
-  padding: 16px;
-  margin-top: 16px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  margin-top: 24px;
+  box-shadow: var(--shadow-subtle);
 }
 
 .incident-detail-panel h4 {
-  margin: 0 0 12px 0;
-  color: #66ccff;
+  margin: 0 0 16px 0;
+  color: var(--accent);
   font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
 
 .detail-info {
-  background: #0f0f0f;
-  padding: 12px;
-  border-radius: 4px;
-  margin-bottom: 12px;
+  background: var(--panel-card);
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  margin-bottom: 20px;
   font-size: 12px;
 }
 
 .detail-info p {
-  margin: 6px 0;
-  color: #aaa;
+  margin: 8px 0;
+  color: var(--text-muted);
 }
 
 .detail-info strong {
-  color: #fff;
+  color: var(--text-bright);
 }
 
 .dispatch-section {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
 }
 
 .unit-input {
@@ -190,98 +208,95 @@
 
 .unit-input input {
   flex: 1;
-  background: #0f0f0f;
-  border: 1px solid #333;
-  color: #fff;
-  padding: 8px;
-  border-radius: 4px;
+  background: var(--panel-card);
+  border: 1px solid var(--border);
+  color: var(--text-bright);
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
   font-size: 12px;
 }
 
 .unit-input input:focus {
   outline: none;
-  border-color: #66ccff;
+  border-color: var(--accent);
 }
 
 .dispatch-buttons {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 8px;
+  gap: 12px;
 }
 
 .dispatch-buttons button {
-  padding: 8px 12px;
+  padding: 10px 16px;
   border: none;
-  border-radius: 4px;
-  font-weight: bold;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
   font-size: 12px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--duration) var(--ease);
 }
 
 .btn-dispatch {
-  background: #0099ff;
-  color: #fff;
-}
-
-.btn-dispatch:hover {
-  background: #00aaff;
+  background: var(--accent);
+  color: var(--text-bright);
 }
 
 .btn-escalate {
-  background: #ff6600;
-  color: #fff;
-}
-
-.btn-escalate:hover {
-  background: #ff7722;
+  background: var(--warning);
+  color: #000;
 }
 
 .access-denied-notice {
-  background: rgba(255, 51, 51, 0.1);
-  border: 1px solid #ff3333;
-  border-radius: 4px;
+  background: rgba(239, 68, 68, 0.05);
+  border: 1px solid var(--critical);
+  border-radius: var(--radius-sm);
   padding: 12px;
-  color: #ff3333;
+  color: var(--critical);
   font-size: 12px;
   text-align: center;
 }
 
 .incident-statistics {
-  background: #1a1a1a;
-  border: 1px solid #333;
-  border-radius: 6px;
-  padding: 12px;
-  margin-top: 16px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  margin-top: 24px;
 }
 
 .incident-statistics h4 {
-  margin: 0 0 8px 0;
-  color: #66ccff;
+  margin: 0 0 12px 0;
+  color: var(--accent);
   font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
 
 .stat-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
+  gap: 12px;
 }
 
 .stat-item {
-  background: #0f0f0f;
-  padding: 8px;
-  border-radius: 4px;
-  font-size: 11px;
+  background: var(--panel-card);
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
 }
 
 .stat-item span {
-  color: #888;
+  color: var(--text-muted);
+  font-size: 10px;
   display: block;
+  text-transform: uppercase;
+  margin-bottom: 4px;
 }
 
 .stat-item strong {
-  color: #fff;
-  font-size: 13px;
+  color: var(--text-bright);
+  font-size: 16px;
+  font-weight: 600;
   display: block;
-  margin-top: 2px;
 }

@@ -1,35 +1,37 @@
-/* Security Banner Styling */
+/* Security Banner Styling - Minimal SaaS Theme */
 .threat-banner {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 1000;
-  padding: 12px 16px;
+  padding: 10px 20px;
+  box-shadow: var(--shadow-subtle);
 }
 
 .threat-banner.threat-critical {
-  background: linear-gradient(90deg, #ff3333 0%, #ff5555 100%);
-  color: #fff;
-  animation: banner-slide-in 0.3s ease;
+  background: var(--critical);
+  color: var(--text-bright);
+  animation: banner-slide-in var(--duration) var(--ease);
 }
 
 .threat-banner.trust-warning {
-  background: linear-gradient(90deg, #ff6600 0%, #ff8833 100%);
-  color: #fff;
-  animation: banner-slide-in 0.3s ease;
+  background: var(--warning);
+  color: #000;
+  animation: banner-slide-in var(--duration) var(--ease);
 }
 
 .threat-banner.rate-limit-alert {
-  background: linear-gradient(90deg, #ffaa00 0%, #ffbb33 100%);
-  color: #000;
-  animation: banner-slide-in 0.3s ease;
+  background: var(--accent);
+  color: var(--text-bright);
+  animation: banner-slide-in var(--duration) var(--ease);
 }
 
 @keyframes banner-slide-in {
   from {
     transform: translateY(-100%);
   }
+
   to {
     transform: translateY(0);
   }
@@ -40,8 +42,8 @@
   margin: 0 auto;
   display: flex;
   align-items: center;
-  gap: 12px;
-  font-weight: bold;
+  gap: 16px;
+  font-weight: 600;
   font-size: 13px;
 }
 
@@ -61,30 +63,31 @@
 .banner-detail {
   font-size: 11px;
   opacity: 0.8;
+  font-weight: 400;
 }
 
 .security-status-bar {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  padding: 12px 16px;
-  background: #1a1a1a;
-  border-bottom: 1px solid #333;
-  max-width: 1400px;
-  margin: 0 auto;
+  gap: 24px;
+  padding: 12px 24px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+  max-width: 100%;
 }
 
 .status-item {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
 }
 
 .status-label {
-  font-size: 11px;
-  color: #888;
-  font-weight: bold;
+  font-size: 10px;
+  color: var(--text-muted);
+  font-weight: 600;
   text-transform: uppercase;
+  letter-spacing: 0.05em;
   min-width: 80px;
 }
 
@@ -93,26 +96,27 @@
 }
 
 .score-value {
-  font-weight: bold;
+  font-weight: 600;
   font-size: 13px;
+  color: var(--text-bright);
 }
 
 .score-bar {
   height: 4px;
-  background: #0f0f0f;
+  background: rgba(255, 255, 255, 0.04);
   border-radius: 2px;
   overflow: hidden;
-  margin-top: 4px;
-  border: 1px solid #333;
+  margin-top: 6px;
+  border: none;
 }
 
 .score-fill {
   height: 100%;
   border-radius: 2px;
-  transition: all 0.3s ease;
+  transition: all var(--duration) var(--ease);
 }
 
 .user-detail {
   font-size: 12px;
-  color: #aaa;
+  color: var(--text-muted);
 }
