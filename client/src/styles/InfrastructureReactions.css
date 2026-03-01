@@ -1,9 +1,9 @@
-/* Infrastructure Reactions Styling - Minimal SaaS Theme */
+/* Infrastructure Reactions Styling */
 
 .infrastructure-reactions {
   position: fixed;
-  bottom: 24px;
-  right: 24px;
+  bottom: 20px;
+  right: 20px;
   z-index: 100;
   display: flex;
   flex-direction: column;
@@ -15,55 +15,64 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px 20px;
-  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  border-radius: 6px;
   font-weight: 600;
-  font-size: 11px;
+  font-size: 12px;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.05em;
   pointer-events: auto;
-  animation: barrier-fade-in 0.3s var(--ease);
+  animation: barrier-fade-in 0.3s ease;
 }
 
 .barrier-icon {
   font-size: 18px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.1);
+  }
 }
 
 .threat-barrier {
-  background: var(--panel);
-  border: 1px solid var(--critical);
-  color: var(--critical);
-  box-shadow: var(--shadow-subtle);
+  background: linear-gradient(135deg, rgba(255, 51, 51, 0.3), rgba(255, 102, 0, 0.2));
+  border: 2px solid #ff3333;
+  color: #ff3333;
+  box-shadow: 0 0 20px rgba(255, 51, 51, 0.4);
 }
 
 .trust-barrier {
-  background: var(--panel);
-  border: 1px solid var(--warning);
-  color: var(--warning);
-  box-shadow: var(--shadow-subtle);
+  background: linear-gradient(135deg, rgba(255, 153, 0, 0.3), rgba(255, 170, 0, 0.2));
+  border: 2px solid #ffaa00;
+  color: #ffaa00;
+  box-shadow: 0 0 15px rgba(255, 170, 0, 0.3);
 }
 
 .reaction-toast {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-left: 4px solid var(--text-muted);
-  padding: 12px 16px;
-  border-radius: var(--radius-sm);
+  background: #1a1a1a;
+  border-left: 4px solid;
+  padding: 10px 14px;
+  border-radius: 4px;
   font-size: 12px;
-  color: var(--text-bright);
   pointer-events: auto;
-  box-shadow: var(--shadow-subtle);
-  animation: toast-slide-in 0.3s var(--ease);
+  animation: toast-slide-in 0.3s ease;
 }
 
 .reaction-warning {
-  border-left-color: var(--warning);
-  color: var(--warning);
+  border-left-color: #ffaa00;
+  color: #ffaa00;
 }
 
 .reaction-critical {
-  border-left-color: var(--critical);
-  color: var(--critical);
+  border-left-color: #ff3333;
+  color: #ff3333;
 }
 
 @keyframes barrier-fade-in {
@@ -71,7 +80,6 @@
     opacity: 0;
     transform: translateY(10px);
   }
-
   to {
     opacity: 1;
     transform: translateY(0);
@@ -83,7 +91,6 @@
     opacity: 0;
     transform: translateX(20px);
   }
-
   to {
     opacity: 1;
     transform: translateX(0);
@@ -92,18 +99,18 @@
 
 @media (max-width: 768px) {
   .infrastructure-reactions {
-    bottom: 16px;
-    right: 16px;
+    bottom: 10px;
+    right: 10px;
     gap: 8px;
   }
 
   .reaction-barrier {
-    padding: 10px 16px;
-    font-size: 10px;
+    padding: 10px 12px;
+    font-size: 11px;
   }
 
   .reaction-toast {
-    padding: 10px;
+    padding: 8px 12px;
     font-size: 11px;
   }
 }

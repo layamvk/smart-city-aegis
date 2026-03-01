@@ -1,7 +1,8 @@
-/* Traffic Control Styling - Minimal SaaS Theme */
+/* Traffic Control Styling */
 .traffic-control-module {
-  padding: 24px;
+  padding: 16px;
   background: transparent;
+  border-radius: 0;
   height: 100%;
   width: 100%;
   overflow-y: auto;
@@ -13,211 +14,223 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
-  border-bottom: 1px solid var(--border);
+  margin-bottom: 16px;
+  border-bottom: 1px solid #333;
   padding-bottom: 12px;
 }
 
 .traffic-control-module h3 {
   margin: 0;
   font-size: 16px;
-  color: var(--text-bright);
+  color: #fff;
 }
 
 .auth-status {
-  font-size: 11px;
-  padding: 4px 10px;
-  border-radius: var(--radius-sm);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  font-size: 12px;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-weight: bold;
 }
 
 .auth-status.authorized {
-  background: var(--accent-muted);
-  color: var(--success);
+  background: rgba(0, 204, 68, 0.2);
+  color: #00cc44;
 }
 
 .auth-status.restricted {
-  background: rgba(239, 68, 68, 0.1);
-  color: var(--critical);
+  background: rgba(255, 51, 51, 0.2);
+  color: #ff3333;
 }
 
 .access-denied-alert {
-  background: rgba(239, 68, 68, 0.05);
-  border: 1px solid var(--critical);
-  border-radius: var(--radius-md);
-  padding: 16px;
-  margin-bottom: 20px;
+  background: rgba(255, 51, 51, 0.1);
+  border: 1px solid #ff3333;
+  border-radius: 4px;
+  padding: 12px;
+  margin-bottom: 16px;
   display: flex;
   align-items: center;
-  gap: 12px;
-  color: var(--critical);
+  gap: 8px;
+  color: #ff3333;
   font-size: 13px;
+}
+
+.alert-icon {
+  font-size: 16px;
 }
 
 .signals-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 16px;
-  margin-bottom: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
 }
 
 .signal-card {
-  background: var(--panel-card);
-  border: 1px solid var(--border);
-  border-left: 3px solid var(--text-muted);
-  border-radius: var(--radius-md);
-  padding: 16px;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-left: 4px solid #666;
+  border-radius: 6px;
+  padding: 12px;
   cursor: pointer;
-  transition: all var(--duration) var(--ease);
+  transition: all 0.2s ease;
 }
 
 .signal-card:hover {
-  border-color: rgba(255, 255, 255, 0.1);
-  transform: translateY(-2px);
+  background: #222;
+  border-color: #444;
 }
 
 .signal-card.selected {
-  background: var(--panel);
-  border-color: var(--accent);
-  box-shadow: var(--shadow-subtle);
+  background: #222;
+  border-color: #66ccff;
+  box-shadow: 0 0 16px rgba(102, 204, 255, 0.2);
 }
 
 .signal-status {
   width: 100%;
   padding: 8px;
-  border-radius: var(--radius-sm);
+  border-radius: 4px;
   text-align: center;
-  font-weight: 600;
-  font-size: 12px;
-  margin-bottom: 12px;
+  font-weight: bold;
+  font-size: 13px;
+  margin-bottom: 8px;
   color: #000;
 }
 
 .signal-info h4 {
-  margin: 0 0 6px 0;
-  font-size: 13px;
-  color: var(--text-bright);
+  margin: 0 0 4px 0;
+  font-size: 12px;
+  color: #fff;
 }
 
 .signal-info p {
-  margin: 4px 0;
+  margin: 2px 0;
   font-size: 11px;
-  color: var(--text-muted);
+  color: #888;
 }
 
 .signal-timestamp {
   font-size: 10px;
-  color: var(--text-muted);
-  opacity: 0.7;
+  color: #666;
 }
 
 .signal-detail-panel {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 24px;
-  margin-top: 24px;
-  box-shadow: var(--shadow-subtle);
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 16px;
+  margin-top: 16px;
 }
 
 .signal-detail-panel h4 {
-  margin: 0 0 16px 0;
-  color: var(--accent);
+  margin: 0 0 12px 0;
+  color: #66ccff;
   font-size: 14px;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
 }
 
 .detail-info {
-  background: var(--panel-card);
-  padding: 16px;
-  border-radius: var(--radius-md);
-  margin-bottom: 20px;
+  background: #0f0f0f;
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 12px;
   font-size: 12px;
-  border: 1px solid var(--border);
 }
 
 .detail-info p {
-  margin: 8px 0;
-  color: var(--text-muted);
+  margin: 6px 0;
+  color: #aaa;
 }
 
 .detail-info strong {
-  color: var(--text-bright);
+  color: #fff;
 }
 
 .control-buttons {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-  gap: 12px;
-  margin-bottom: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 8px;
+  margin-bottom: 12px;
 }
 
 .control-buttons button {
-  padding: 10px 16px;
+  padding: 8px 12px;
   border: none;
-  border-radius: var(--radius-sm);
-  font-weight: 600;
+  border-radius: 4px;
+  font-weight: bold;
   font-size: 12px;
   cursor: pointer;
-  transition: all var(--duration) var(--ease);
+  transition: all 0.2s ease;
 }
 
 .btn-red {
-  background: var(--critical);
-  color: var(--text-bright);
-}
-
-.btn-yellow {
-  background: var(--warning);
+  background: #ff3333;
   color: #000;
 }
 
+.btn-red:hover {
+  background: #ff5555;
+}
+
+.btn-yellow {
+  background: #ffaa00;
+  color: #000;
+}
+
+.btn-yellow:hover {
+  background: #ffbb33;
+}
+
 .btn-green {
-  background: var(--success);
-  color: var(--text-bright);
+  background: #00cc44;
+  color: #000;
+}
+
+.btn-green:hover {
+  background: #33dd66;
 }
 
 .btn-emergency {
-  background: var(--accent);
-  color: var(--text-bright);
+  background: #ff1493;
+  color: #fff;
   grid-column: 1 / -1;
 }
 
+.btn-emergency:hover {
+  background: #ff3399;
+}
+
 .access-denied-notice {
-  background: rgba(239, 68, 68, 0.05);
-  border: 1px solid var(--critical);
-  border-radius: var(--radius-sm);
+  background: rgba(255, 51, 51, 0.1);
+  border: 1px solid #ff3333;
+  border-radius: 4px;
   padding: 12px;
-  color: var(--critical);
+  color: #ff3333;
   font-size: 12px;
 }
 
 .zone-risk-elevated {
-  background: rgba(239, 68, 68, 0.05);
-  border: 1px solid var(--critical);
-  border-radius: var(--radius-md);
-  padding: 16px;
-  margin-top: 20px;
+  background: rgba(255, 51, 51, 0.1);
+  border: 1px solid #ff3333;
+  border-radius: 6px;
+  padding: 12px;
+  margin-top: 16px;
 }
 
 .zone-risk-elevated h4 {
-  margin: 0 0 10px 0;
-  color: var(--critical);
+  margin: 0 0 8px 0;
+  color: #ff3333;
   font-size: 12px;
-  text-transform: uppercase;
 }
 
 .zone-risk-elevated ul {
   list-style: none;
   padding: 0;
   margin: 0;
+  font-size: 11px;
 }
 
 .zone-risk-elevated li {
-  color: var(--critical);
+  color: #ff3333;
   padding: 4px 0;
-  font-size: 11px;
 }
