@@ -6,6 +6,14 @@ import MapOverlays from './MapOverlays';
 
 const TILE_URL = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
 
+// Chennai viewport constants
+const CHENNAI_CENTER = [13.0827, 80.2707];
+const CHENNAI_ZOOM = 11;
+const CHENNAI_BOUNDS = L.latLngBounds(
+  L.latLng(12.75, 79.95),   // SW corner — beyond district boundary
+  L.latLng(13.35, 80.50)    // NE corner — beyond district boundary
+);
+
 const MapRoot = ({ enabled = true, activeZone, onZoneClick, onNodeClick }) => {
   const { mapRef, setMapInstance, containerRef, layersRef } = useMapContext();
   const initRef = useRef(false);
@@ -14,11 +22,14 @@ const MapRoot = ({ enabled = true, activeZone, onZoneClick, onNodeClick }) => {
     if (initRef.current || !containerRef.current) return;
     initRef.current = true;
 
-    // Use specific ID as requested
     const map = L.map(containerRef.current, {
-      center: [13.0827, 80.2707],
-      zoom: 11,
-      zoomControl: false, // Adding custom position below
+      center: CHENNAI_CENTER,
+      zoom: CHENNAI_ZOOM,
+      minZoom: 10,           // never zoom out past district level
+      maxZoom: 18,
+      maxBounds: CHENNAI_BOUNDS,
+      maxBoundsViscosity: 1.0,          // hard stop — cannot pan outside bounds
+      zoomControl: false,
       scrollWheelZoom: true,
       dragging: true,
       doubleClickZoom: true,
@@ -29,26 +40,26 @@ const MapRoot = ({ enabled = true, activeZone, onZoneClick, onNodeClick }) => {
 
     L.tileLayer(TILE_URL, {
       attribution: '&copy; CartoDB',
-      maxZoom: 19
+      maxZoom: 19,
+      subdomains: 'abcd',
     }).addTo(map);
 
-    // Zoom control topright as requested
     L.control.zoom({ position: 'topright' }).addTo(map);
+
+    // Force Chennai view explicitly — eliminates any centering drift
+    map.setView(CHENNAI_CENTER, CHENNAI_ZOOM, { animate: false });
 
     mapRef.current = map;
 
-    // CRITICAL: Add all layer groups to map BEFORE calling setMapInstance.
-    // MapOverlays listens to mapInstance and immediately tries to render
-    // into these layers. If they're not on the map yet, addTo() fails silently.
+    // CRITICAL: layers must be on map BEFORE setMapInstance so overlays
+    // can safely addTo() them on first render.
     Object.values(layersRef.current).forEach(lg => lg.addTo(map));
 
-    // Now safe to notify overlays the map is ready
     setMapInstance(map);
 
-    // Force size validation
-    setTimeout(() => {
-      map.invalidateSize();
-    }, 300);
+    // Double invalidate: once at mount, once after layout settles
+    setTimeout(() => { if (mapRef.current) mapRef.current.invalidateSize(); }, 100);
+    setTimeout(() => { if (mapRef.current) mapRef.current.invalidateSize(); }, 600);
 
     return () => {
       map.remove();
@@ -63,10 +74,11 @@ const MapRoot = ({ enabled = true, activeZone, onZoneClick, onNodeClick }) => {
   useEffect(() => {
     const map = mapRef.current;
     if (!map) return;
+
     const handlers = [
       map.dragging, map.scrollWheelZoom,
       map.doubleClickZoom, map.boxZoom,
-      map.keyboard, map.touchZoom
+      map.keyboard, map.touchZoom,
     ].filter(Boolean);
 
     handlers.forEach(h => enabled ? h.enable() : h.disable());
