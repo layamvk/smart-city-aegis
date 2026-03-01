@@ -151,11 +151,18 @@ const startServer = async () => {
     await connectDB();
     await seedDefaultUsers();
 
-    const server = http.createServer(app);
     const io = new Server(server, {
       cors: {
-        origin: allowedOrigins,
-        methods: ["GET", "POST"]
+        origin: (origin, callback) => {
+          if (!origin) return callback(null, true);
+          if (allowedOrigins.indexOf(origin) !== -1 || origin.endsWith('.vercel.app')) {
+            callback(null, true);
+          } else {
+            callback(new Error('Not allowed by CORS'));
+          }
+        },
+        methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        credentials: true
       }
     });
 
